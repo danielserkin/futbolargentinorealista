@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { CalendarDays, ChevronDown, CircleAlert, Clock3, ExternalLink, Info, Shield, Sparkles, Trophy } from 'lucide-react'
-import { calculateStandings, inDateRange } from './standings'
+import { calculateSeasonStandings, inDateRange } from './standings'
 import type { FootballData, Match, SeasonDefinition, StandingRow, Team } from './types'
 
 const seasons: SeasonDefinition[] = [
@@ -64,16 +64,18 @@ function EmptyState({ text }: { text: string }) {
 
 function LeagueView({ data, season }: { data: FootballData; season: SeasonDefinition }) {
   const matches = useMemo(() => data.league.filter((match) => inDateRange(match.date, season.start, season.end)), [data, season])
-  const standings = useMemo(() => calculateStandings(matches), [matches])
+  const seasonTable = useMemo(() => calculateSeasonStandings(matches), [matches])
+  const standings = seasonTable.standings
   const visible = standings.slice(0, 20)
   const excluded = standings.slice(20)
-  const played = matches.filter((match) => match.completed).length
+  const played = seasonTable.regularMatches.filter((match) => match.completed).length
+  const playoffsExcluded = matches.filter((match) => match.completed && !match.round.startsWith('torneo-')).length
 
   return (
     <>
       <div className="section-title-row">
-        <div><span className="eyebrow">TABLA GENERAL</span><h2>La liga que debería ser</h2><p>{played} partidos reales computados · {standings.length} clubes participantes</p></div>
-        <span className={`season-status ${season.state}`}><i />{season.state === 'en-curso' ? 'En curso' : 'Finalizada'}</span>
+        <div><span className="eyebrow">TABLA GENERAL · SÓLO FASE REGULAR</span><h2>La liga que debería ser</h2><p>{played} partidos regulares computados · {playoffsExcluded} partidos de playoff excluidos</p></div>
+        <div className="status-stack"><span className="regular-pill"><Shield size={12} /> Sin playoffs</span><span className={`season-status ${season.state}`}><i />{season.state === 'en-curso' ? 'En curso' : 'Finalizada'}</span></div>
       </div>
       {visible.length ? <StandingsTable rows={visible} /> : <EmptyState text="Todavía no hay partidos finalizados en esta temporada." />}
       {excluded.length > 0 && (
@@ -81,6 +83,14 @@ function LeagueView({ data, season }: { data: FootballData; season: SeasonDefini
           <summary><span><ChevronDown size={18} /> Excluidos de la liga</span><b>{excluded.length} clubes</b></summary>
           <div className="excluded-list">
             {excluded.map((team) => <div key={team.id}><span>{team.position}</span><TeamBadge team={team} small /><strong>{team.name}</strong><b>{team.points} pts</b></div>)}
+          </div>
+        </details>
+      )}
+      {seasonTable.partial.length > 0 && (
+        <details className="excluded partial">
+          <summary><span><ChevronDown size={18} /> Participación parcial</span><b>{seasonTable.partial.length} clubes fuera de la tabla</b></summary>
+          <div className="excluded-list">
+            {seasonTable.partial.map((team) => <div key={team.id}><span>–</span><TeamBadge team={team} small /><strong>{team.name}</strong><b>{team.played} PJ</b></div>)}
           </div>
         </details>
       )}
@@ -96,7 +106,7 @@ function Rules() {
   ]
   return (
     <section className="rules-card">
-      <div className="rules-copy"><Info size={21} /><div><h3>Cómo funciona esta liga</h3><p>Sumamos todos los partidos reales disputados dentro de la temporada. Victoria 3 puntos, empate 1. Desempates por diferencia de gol, goles a favor y victorias. Los clubes fuera del top 20 quedan excluidos.</p></div></div>
+      <div className="rules-copy"><Info size={21} /><div><h3>Cómo funciona esta liga</h3><p>Contamos únicamente la fase regular de cada torneo: octavos, cuartos, semifinales y finales no suman. Así ningún club obtiene partidos extra por clasificar a playoffs. Si un club participó sólo en uno de los dos semestres, figura como participación parcial y queda fuera de la tabla. Victoria 3 puntos, empate 1.</p></div></div>
       <div className="legend">{rules.map(([color, label, range]) => <div key={label}><i className={color} /><span>{label}</span><b>{range}</b></div>)}</div>
     </section>
   )
@@ -148,7 +158,7 @@ function Finalist({ team, label }: { team: Team | null; label: string }) {
 }
 
 function SupercupView({ data, season }: { data: FootballData; season: SeasonDefinition }) {
-  const table = calculateStandings(data.league.filter((match) => inDateRange(match.date, season.start, season.end)))
+  const table = calculateSeasonStandings(data.league.filter((match) => inDateRange(match.date, season.start, season.end))).standings
   const leagueChampion = season.state === 'finalizada' ? table[0] ?? null : null
   const cupYear = season.id.slice(0, 4)
   const cupChampion = findCupChampion(data.cup, cupYear)

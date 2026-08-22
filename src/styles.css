@@ -49,6 +49,9 @@ select { border: 1px solid var(--line); border-radius: 4px; background: #0c1b2a;
 .section-title-row p { margin: 0; color: #708396; font-size: 11px; }
 .season-status { padding: 8px 11px; background: rgba(255,255,255,.035); color: #9caebe; border-radius: 3px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
 .season-status.en-curso { color: #65dfa3; background: rgba(56,182,119,.08); }
+.status-stack { display: flex; align-items: center; gap: 7px; }
+.regular-pill { display: flex; align-items: center; gap: 5px; padding: 8px 10px; border-radius: 3px; color: var(--sky); background: rgba(87,187,235,.08); font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; white-space: nowrap; }
+.partial { border-color: rgba(229,154,69,.18); }
 .table-shell { overflow-x: auto; border: 1px solid var(--line); }
 table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 11px; }
 th { height: 37px; color: #55687a; background: rgba(255,255,255,.018); font-size: 8px; text-transform: uppercase; letter-spacing: .08em; }

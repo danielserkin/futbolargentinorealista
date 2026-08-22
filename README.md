@@ -23,6 +23,8 @@ Los datos se obtienen del marcador público de ESPN y se guardan como una instan
 
 - Temporadas de julio a junio.
 - Tres puntos por victoria y uno por empate.
+- Sólo se computan fases regulares; los playoffs no suman puntos ni partidos.
+- Los clubes que participaron en un solo semestre figuran como participación parcial y no integran la tabla.
 - Desempates por diferencia de gol, goles a favor, victorias y nombre.
 - Puestos 1–6: Libertadores; 7–12: Sudamericana; 17: promoción; 18–20: descenso.
 - Los equipos por debajo del puesto 20 aparecen como excluidos.
