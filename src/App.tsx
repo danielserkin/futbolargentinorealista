@@ -281,7 +281,14 @@ function App() {
           </div>
         </section>
       </main>
-      <footer><span>Fútbol Argentino Realista</span><p>Sitio independiente. No afiliado a AFA ni a sus competencias. Datos deportivos de acceso público.</p><b>Hecho en Argentina 🇦🇷</b></footer>
+      <footer>
+        <span>Fútbol Argentino Realista</span>
+        <p>Sitio independiente. No afiliado a AFA ni a sus competencias. Datos deportivos de acceso público.</p>
+        <div className="footer-end">
+          <b>Hecho en Argentina 🇦🇷</b>
+          <div className="footer-links"><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
+        </div>
+      </footer>
     </div>
   )
 }

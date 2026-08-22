@@ -54,13 +54,12 @@
 - Publisher ID conectado: `ca-pub-4747589340489317`.
 - La metaetiqueta, el script de verificación y `ads.txt` están integrados.
 - El workflow toma el identificador del bloque desde la variable de GitHub `ADSENSE_SLOT`.
+- Acerca del sitio, Contacto y Privacidad/cookies están publicados y enlazados desde el pie.
+- La política incluye un acceso para volver a abrir las preferencias de la CMP de Google.
 - Cuando el dominio y HTTPS estén activos:
-  1. Agregar Acerca del sitio, Contacto y Política de privacidad/cookies.
-  2. Registrar `futbolrealista.com.ar` en Google AdSense.
-  3. Crear el bloque de anuncio en AdSense.
-  4. Cargar `ADSENSE_SLOT` en GitHub Actions Variables.
-  5. Configurar consentimiento y publicar `ads.txt`.
-  6. Enviar el sitio a revisión de Google.
+  1. Esperar la revisión de `futbolrealista.com.ar` en Google AdSense.
+  2. Crear el bloque de anuncio en AdSense.
+  3. Cargar `ADSENSE_SLOT` en GitHub Actions Variables.
 
 ## Seguridad
 

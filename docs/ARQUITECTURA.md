@@ -74,6 +74,7 @@ Registros previstos en la zona:
 - Requerirá páginas legales, consentimiento, código de verificación y `ads.txt`.
 - El Publisher ID, la verificación del sitio y `ads.txt` están integrados.
 - El bloque responsivo empieza a solicitar anuncios cuando recibe `ADSENSE_SLOT` durante el build.
+- Acerca del sitio, Contacto y Privacidad/cookies son páginas estáticas incluidas en cada despliegue.
 - El identificador público será del tipo `ca-pub-...`; las credenciales nunca se guardan en el repositorio.
 
 ## Estado actual
