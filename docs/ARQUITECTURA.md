@@ -19,7 +19,7 @@ GitHub Pages
    ├── Aplicación React/Vite
    └── Instantánea estática de resultados
              ▲
-             │ cada 6 horas
+             │ cada 30 minutos (reciente) + diario (completo)
         GitHub Actions
              │
              ▼
@@ -56,7 +56,7 @@ Registros previstos en la zona:
 ### GitHub
 
 - El repositorio contiene todo el código y la documentación.
-- GitHub Actions descarga y valida los resultados cada seis horas.
+- GitHub Actions fusiona los partidos recientes cada treinta minutos y descarga el historial completo una vez al día.
 - Ejecuta las pruebas y genera la versión de producción.
 - GitHub Pages publica los archivos estáticos.
 - Si una actualización falla, la última publicación válida permanece online.
@@ -82,13 +82,13 @@ Registros previstos en la zona:
 | Componente | Estado |
 | --- | --- |
 | Aplicación y tabla | Activo |
-| Datos automáticos | Activo, cada 6 horas |
+| Datos automáticos | Activo, cada 30 minutos; sincronización completa diaria |
 | GitHub Pages | Activo en la URL temporal |
 | Dominio comprado | Activo en NIC Argentina |
 | Cloudflare DNS | Activo; registros públicos verificados |
 | Dominio conectado a GitHub | DNS listo; falta guardar el dominio en Settings → Pages |
 | HTTPS del dominio | Pendiente de validación y emisión del certificado por GitHub |
-| Google AdSense | Pendiente de dominio y aprobación |
+| Google AdSense | En revisión; anuncios desactivados y verificación por metaetiqueta |
 
 ## Direcciones previstas
 

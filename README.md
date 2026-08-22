@@ -17,7 +17,7 @@ npm test
 npm run build
 ```
 
-Los datos se obtienen del marcador público de ESPN y se guardan como una instantánea estática. GitHub Actions actualiza y publica la web cada seis horas. Si la descarga o la validación fallan, el despliegue se detiene y la última versión válida permanece online.
+Los datos se obtienen del marcador público de ESPN y se guardan como una instantánea estática. GitHub Actions comprueba los partidos recientes cada treinta minutos y realiza una actualización completa diaria. Si la descarga o la validación fallan, el despliegue se detiene y la última versión válida permanece online.
 
 ## Reglas
 

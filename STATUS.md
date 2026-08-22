@@ -9,7 +9,7 @@
 - Sólo se computan fases regulares; los playoffs están excluidos.
 - Todos los clubes clasificados de 2025/26 tienen 32 PJ.
 - Copa Argentina, Supercopa, excluidos y participación parcial implementados.
-- Datos deportivos actualizados automáticamente cada seis horas.
+- Partidos recientes comprobados automáticamente cada treinta minutos y actualización completa diaria.
 - Pruebas: 6 aprobadas.
 - GitHub Pages publicado en la URL temporal.
 - Último workflow verificado: exitoso.
@@ -49,17 +49,17 @@
 
 ## Publicidad pendiente
 
-- El banner ya admite un bloque responsivo de Google AdSense.
-- Sin `ADSENSE_SLOT` muestra un espacio publicitario neutro; el script de verificación permanece activo.
+- El bloque responsivo de Google AdSense está desactivado durante la revisión mediante `VITE_ADSENSE_ENABLED`.
+- La portada se verifica con la metaetiqueta y no carga el script publicitario ni muestra espacios vacíos.
 - Publisher ID conectado: `ca-pub-4747589340489317`.
-- La metaetiqueta, el script de verificación y `ads.txt` están integrados.
+- La metaetiqueta y `ads.txt` están integrados; el script sólo se inyectará después de la aprobación y con contenido suficiente.
 - El workflow toma el identificador del bloque desde la variable de GitHub `ADSENSE_SLOT`.
 - Acerca del sitio, Contacto y Privacidad/cookies están publicados y enlazados desde el pie.
 - La política incluye un acceso para volver a abrir las preferencias de la CMP de Google.
 - Cuando el dominio y HTTPS estén activos:
-  1. Esperar la revisión de `futbolrealista.com.ar` en Google AdSense.
-  2. Crear el bloque de anuncio en AdSense.
-  3. Cargar `ADSENSE_SLOT` en GitHub Actions Variables.
+  1. Publicar los cambios y esperar a que Google rastree las páginas editoriales.
+  2. Solicitar una nueva revisión de `futbolrealista.com.ar` en Google AdSense.
+  3. Después de la aprobación, cargar `ADSENSE_SLOT` y `ADSENSE_ENABLED=true` en GitHub Actions Variables.
 
 ## Seguridad
 

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CalendarDays, ChevronDown, CircleAlert, Clock3, Info, Shield, Sparkles, Trophy } from 'lucide-react'
 import { calculateSeasonStandings, inDateRange } from './standings'
+import { canShowAds } from './monetization'
 import type { FootballData, Match, SeasonDefinition, StandingRow, Team } from './types'
 
 const seasons: SeasonDefinition[] = [
@@ -17,7 +18,7 @@ const roundNames: Record<string, string> = {
   'round-of-64': '32avos de final',
 }
 
-type View = 'liga' | 'copa' | 'supercopa'
+export type View = 'liga' | 'copa' | 'supercopa'
 
 declare global {
   interface Window {
@@ -27,6 +28,7 @@ declare global {
 
 const adsenseClient = import.meta.env.VITE_ADSENSE_CLIENT?.trim()
 const adsenseSlot = import.meta.env.VITE_ADSENSE_SLOT?.trim()
+const adsenseEnabled = import.meta.env.VITE_ADSENSE_ENABLED === 'true'
 const adsenseConfigured = /^ca-pub-\d+$/.test(adsenseClient ?? '') && /^\d+$/.test(adsenseSlot ?? '')
 
 const positionClass = (position: number) => {
@@ -77,7 +79,7 @@ function AdBanner() {
 
   useEffect(() => {
     const ad = adRef.current
-    if (!adsenseConfigured || !adsenseClient || !ad || ad.dataset.initialized) return
+    if (!adsenseEnabled || !adsenseConfigured || !adsenseClient || !ad || ad.dataset.initialized) return
 
     ad.dataset.initialized = 'true'
     if (!document.getElementById('adsense-script')) {
@@ -93,15 +95,6 @@ function AdBanner() {
     window.adsbygoogle.push({})
   }, [])
 
-  if (!adsenseConfigured) {
-    return (
-      <aside className="ad-banner ad-placeholder" aria-label="Espacio publicitario">
-        <span>PUBLICIDAD</span>
-        <div><Shield size={23} /><strong>Espacio publicitario</strong></div>
-      </aside>
-    )
-  }
-
   return (
     <aside className="ad-banner ad-banner-live" aria-label="Publicidad">
       <span>PUBLICIDAD</span>
@@ -114,6 +107,24 @@ function AdBanner() {
         data-full-width-responsive="true"
       />
     </aside>
+  )
+}
+
+function EditorialOverview() {
+  return (
+    <section className="editorial" aria-labelledby="editorial-title">
+      <div className="editorial-heading">
+        <span className="eyebrow">CRITERIO EDITORIAL Y DATOS ABIERTOS</span>
+        <h2 id="editorial-title">Una tabla comparable, no otro torneo inventado</h2>
+        <p>Fútbol Argentino Realista reorganiza resultados verdaderos para responder una pregunta concreta: cómo quedaría el fútbol local si todos los clubes compitieran en una temporada larga, con reglas estables y sin sumar los playoffs.</p>
+      </div>
+      <div className="editorial-grid">
+        <article><h3>Reglas transparentes</h3><p>Cada victoria vale tres puntos y cada empate uno. La diferencia de gol, los goles a favor y las victorias resuelven los empates. Los clubes que no disputaron ambos semestres quedan identificados fuera de la tabla principal.</p><a href="/formato.html">Ver el formato completo</a></article>
+        <article><h3>Resultados verificables</h3><p>La tabla se calcula a partir del marcador público de ESPN. Un proceso automático normaliza equipos, fechas y marcadores, excluye fases eliminatorias y valida la instantánea antes de publicarla.</p><a href="/metodologia.html">Leer la metodología</a></article>
+        <article><h3>Una temporada terminada</h3><p>La edición 2025/26 reunió 480 partidos regulares de dos semestres. Boca Juniors terminó primero por diferencia de gol tras igualar 59 puntos con Rosario Central.</p><a href="/temporada-2025-26.html">Analizar la temporada 2025/26</a></article>
+      </div>
+      <p className="editorial-note">El proyecto es independiente y no está afiliado a AFA, ESPN ni a los clubes. Los datos pueden recibir correcciones posteriores de la fuente.</p>
+    </section>
   )
 }
 
@@ -237,6 +248,19 @@ function App() {
   const [view, setView] = useState<View>('liga')
   const [seasonId, setSeasonId] = useState('2026-27')
   const season = seasons.find((item) => item.id === seasonId)!
+  const standingCount = useMemo(() => {
+    if (!data) return 0
+    const matches = data.league.filter((match) => inDateRange(match.date, season.start, season.end))
+    return calculateSeasonStandings(matches).standings.length
+  }, [data, season])
+  const showAd = canShowAds({
+    enabled: adsenseEnabled,
+    configured: adsenseConfigured,
+    view,
+    hasData: Boolean(data),
+    hasError: error,
+    standingCount,
+  })
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}data/football.json`).then((response) => {
@@ -249,7 +273,7 @@ function App() {
     <div className="app">
       <div className="topline" />
       <header>
-        <a className="brand" href="#"><span className="brand-mark"><span>AR</span></span><div><strong>FÚTBOL ARGENTINO</strong><small>REALISTA</small></div></a>
+        <a className="brand" href="/"><span className="brand-mark"><span>AR</span></span><div><strong>FÚTBOL ARGENTINO</strong><small>REALISTA</small></div></a>
         <nav aria-label="Secciones">
           <button className={view === 'liga' ? 'active' : ''} onClick={() => setView('liga')}>Liga</button>
           <button className={view === 'copa' ? 'active' : ''} onClick={() => setView('copa')}>Copa Argentina</button>
@@ -264,13 +288,13 @@ function App() {
           <div className="hero-number"><span>20</span><div>CLUBES<br /><b>UNA LIGA</b></div></div>
         </section>
 
-        <AdBanner />
+        {showAd && <AdBanner />}
 
         <section className="content-card">
           <div className="toolbar">
             <div className="mobile-tabs"><button className={view === 'liga' ? 'active' : ''} onClick={() => setView('liga')}>Liga</button><button className={view === 'copa' ? 'active' : ''} onClick={() => setView('copa')}>Copa</button><button className={view === 'supercopa' ? 'active' : ''} onClick={() => setView('supercopa')}>Supercopa</button></div>
             {view !== 'copa' && <label><CalendarDays size={17} /><span>Temporada</span><select value={seasonId} onChange={(event) => setSeasonId(event.target.value)}>{seasons.map((item) => <option value={item.id} key={item.id}>{item.label}</option>)}</select></label>}
-            {data && <span className="updated"><Clock3 size={14} /> Actualizado {new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date(data.metadata.updatedAt))}</span>}
+            {data && <span className="updated"><Clock3 size={14} /> Datos verificados {new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date(data.metadata.updatedAt))}</span>}
           </div>
           <div className="content-body">
             {error && <EmptyState text="No pudimos cargar los datos. Probá de nuevo en unos minutos." />}
@@ -280,13 +304,14 @@ function App() {
             {data && view === 'supercopa' && <SupercupView data={data} season={season} />}
           </div>
         </section>
+        <EditorialOverview />
       </main>
       <footer>
         <span>Fútbol Argentino Realista</span>
         <p>Sitio independiente. No afiliado a AFA ni a sus competencias. Datos deportivos de acceso público.</p>
         <div className="footer-end">
           <b>Hecho en Argentina 🇦🇷</b>
-          <div className="footer-links"><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
+          <div className="footer-links"><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
         </div>
       </footer>
     </div>

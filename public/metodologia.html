@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Cómo se obtienen, validan y transforman los resultados de Fútbol Argentino Realista." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://futbolrealista.com.ar/metodologia.html" />
+    <link rel="stylesheet" href="/legal.css" />
+    <title>Metodología de datos | Fútbol Argentino Realista</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Metodología de datos de Fútbol Argentino Realista","inLanguage":"es-AR","mainEntityOfPage":"https://futbolrealista.com.ar/metodologia.html","publisher":{"@type":"Organization","name":"Fútbol Argentino Realista"}}</script>
+  </head>
+  <body>
+    <div class="topline"></div>
+    <header><a class="brand" href="/">FÚTBOL ARGENTINO <b>REALISTA</b></a><nav class="site-nav" aria-label="Contenido editorial"><a href="/formato.html">Formato</a><a href="/temporada-2025-26.html">Temporada 2025/26</a><a href="/">Tabla</a></nav></header>
+    <main>
+      <span class="eyebrow">Transparencia de datos</span>
+      <h1>Metodología</h1>
+      <p class="lead">La tabla no se carga a mano ni intenta reemplazar los registros oficiales. Parte de resultados deportivos públicos, aplica reglas documentadas y sólo publica una nueva instantánea cuando supera controles mínimos.</p>
+      <article>
+        <h2>Fuente y alcance</h2>
+        <p>Los marcadores, equipos, fechas y estados de los encuentros proceden del marcador público de ESPN. Fútbol Argentino Realista no mantiene una relación comercial con esa empresa y utiliza la información únicamente como fuente deportiva de referencia. La cobertura comprende la primera división argentina y la Copa Argentina para los años necesarios en cada temporada.</p>
+        <h2>Normalización</h2>
+        <p>Cada encuentro se transforma a un formato común con un identificador, fecha, instancia, equipos, resultado y estado. Si la fuente repite un partido, el identificador evita duplicarlo. Cuando una actualización modifica un marcador o reprograma una fecha, la versión más reciente sustituye a la anterior.</p>
+        <p>La Liga Realista toma sólo encuentros finalizados cuya instancia corresponde a la fase regular. Octavos, cuartos, semifinales y finales permanecen disponibles como información deportiva, pero no suman puntos en la tabla larga.</p>
+        <h2>Frecuencia y controles</h2>
+        <p>El sistema comprueba los días cercanos a la fecha actual aproximadamente cada treinta minutos. Una vez al día vuelve a descargar el período completo para detectar reprogramaciones o correcciones antiguas. La ejecución programada de GitHub puede sufrir demoras, por lo que el sitio no se presenta como un servicio en vivo.</p>
+        <p>Antes de publicar se verifican la estructura del archivo, la cantidad mínima de partidos, la ausencia de duplicados y las pruebas del cálculo de posiciones. Si ESPN no responde o una validación falla, el despliegue se detiene y continúa visible la última instantánea válida.</p>
+        <h2>Correcciones y límites</h2>
+        <p>Una fuente puede corregir un resultado después del partido. La hora “Datos verificados” indica la consulta exitosa más reciente, no una certificación oficial. Para informar una diferencia es necesario indicar competencia, fecha y equipos en el <a href="/contacto.html">canal de contacto</a>; cualquier corrección se contrasta antes de cambiar el cálculo.</p>
+        <p class="note">Este proyecto es independiente y no está afiliado a AFA, ESPN, las competencias ni los clubes mencionados.</p>
+      </article>
+    </main>
+    <footer><span>Fútbol Argentino Realista</span><a href="/formato.html">Formato</a><a href="/acerca.html">Acerca</a><a href="/privacidad.html">Privacidad</a></footer>
+  </body>
+</html>

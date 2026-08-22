@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "fetch-data": "node scripts/fetch-data.mjs",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir .prerender --emptyOutDir && node scripts/prerender.mjs && node scripts/check-dist.mjs",
     "test": "vitest run",
     "preview": "vite preview"
   },
