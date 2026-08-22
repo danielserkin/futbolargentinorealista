@@ -34,3 +34,5 @@ Proyecto independiente, no afiliado a AFA ni a sus competencias.
 Dominio principal: [futbolrealista.com.ar](https://futbolrealista.com.ar/)
 
 La distribución del dominio, DNS, hosting, datos y publicidad está documentada en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
+
+Para retomar el trabajo rápidamente, consultar [STATUS.md](STATUS.md).
