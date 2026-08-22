@@ -30,3 +30,5 @@ Los datos se obtienen del marcador público de ESPN y se guardan como una instan
 - Los equipos por debajo del puesto 20 aparecen como excluidos.
 
 Proyecto independiente, no afiliado a AFA ni a sus competencias.
+
+Dominio principal: [futbolrealista.com.ar](https://futbolrealista.com.ar/)

@@ -3,5 +3,6 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/futbolargentinorealista/',
+  // Relative assets work on both the original project URL and the custom domain.
+  base: './',
 })
