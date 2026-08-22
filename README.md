@@ -32,3 +32,5 @@ Los datos se obtienen del marcador público de ESPN y se guardan como una instan
 Proyecto independiente, no afiliado a AFA ni a sus competencias.
 
 Dominio principal: [futbolrealista.com.ar](https://futbolrealista.com.ar/)
+
+La distribución del dominio, DNS, hosting, datos y publicidad está documentada en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
