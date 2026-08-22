@@ -30,26 +30,37 @@
 - Registros `A` del dominio raíz configurados hacia GitHub Pages.
 - Registro `CNAME` de `www` configurado hacia `danielserkin.github.io`.
 - Proxy configurado como **DNS only** (nube gris).
-- Estado observado al actualizar este archivo: Cloudflare espera la propagación y el DNS público aún devuelve `NXDOMAIN`.
+- Cloudflare muestra la zona como **Active**.
+- DNS público verificado:
+  - `NS`: `drake.ns.cloudflare.com` y `uma.ns.cloudflare.com`.
+  - Dominio raíz: las cuatro IP oficiales de GitHub Pages.
+  - `www`: `CNAME` hacia `danielserkin.github.io`.
+- GitHub Pages todavía responde `404` para el dominio y el certificado HTTPS aún no incluye `futbolrealista.com.ar`.
+- Falta guardar el dominio personalizado en la configuración de Pages del repositorio.
 
 ## Próximo paso exacto
 
-1. Esperar a que Cloudflare muestre el dominio como **Active**.
-2. Verificar públicamente `NS`, `A` y `CNAME`.
-3. Reintentar la validación de `futbolrealista.com.ar` en GitHub Pages.
-4. Activar **Enforce HTTPS** cuando GitHub emita el certificado.
-5. Confirmar que el dominio raíz y `www` abren la web.
+1. Abrir `Settings → Pages` en el repositorio de GitHub.
+2. En **Custom domain**, ingresar `futbolrealista.com.ar` y pulsar **Save**.
+3. Esperar a que finalice el DNS check y GitHub emita el certificado.
+4. Activar **Enforce HTTPS** cuando la opción quede disponible.
+5. Confirmar que el dominio raíz y `www` abren la web y que `www` redirige al dominio raíz.
 6. Actualizar este archivo y `docs/ARQUITECTURA.md` con el estado definitivo.
 
 ## Publicidad pendiente
 
-- El banner actual es solamente visual y todavía no genera ingresos.
+- El banner ya admite un bloque responsivo de Google AdSense.
+- Sin `ADSENSE_SLOT` muestra un espacio publicitario neutro; el script de verificación permanece activo.
+- Publisher ID conectado: `ca-pub-4747589340489317`.
+- La metaetiqueta, el script de verificación y `ads.txt` están integrados.
+- El workflow toma el identificador del bloque desde la variable de GitHub `ADSENSE_SLOT`.
 - Cuando el dominio y HTTPS estén activos:
   1. Agregar Acerca del sitio, Contacto y Política de privacidad/cookies.
   2. Registrar `futbolrealista.com.ar` en Google AdSense.
-  3. Obtener el identificador público `ca-pub-...`.
-  4. Integrar el código de AdSense, consentimiento y `ads.txt`.
-  5. Enviar el sitio a revisión de Google.
+  3. Crear el bloque de anuncio en AdSense.
+  4. Cargar `ADSENSE_SLOT` en GitHub Actions Variables.
+  5. Configurar consentimiento y publicar `ads.txt`.
+  6. Enviar el sitio a revisión de Google.
 
 ## Seguridad
 

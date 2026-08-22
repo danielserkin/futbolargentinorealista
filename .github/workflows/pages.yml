@@ -15,6 +15,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VITE_ADSENSE_CLIENT: ca-pub-4747589340489317
+      VITE_ADSENSE_SLOT: ${{ vars.ADSENSE_SLOT }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

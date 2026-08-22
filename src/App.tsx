@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { CalendarDays, ChevronDown, CircleAlert, Clock3, ExternalLink, Info, Shield, Sparkles, Trophy } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { CalendarDays, ChevronDown, CircleAlert, Clock3, Info, Shield, Sparkles, Trophy } from 'lucide-react'
 import { calculateSeasonStandings, inDateRange } from './standings'
 import type { FootballData, Match, SeasonDefinition, StandingRow, Team } from './types'
 
@@ -18,6 +18,16 @@ const roundNames: Record<string, string> = {
 }
 
 type View = 'liga' | 'copa' | 'supercopa'
+
+declare global {
+  interface Window {
+    adsbygoogle?: Record<string, unknown>[]
+  }
+}
+
+const adsenseClient = import.meta.env.VITE_ADSENSE_CLIENT?.trim()
+const adsenseSlot = import.meta.env.VITE_ADSENSE_SLOT?.trim()
+const adsenseConfigured = /^ca-pub-\d+$/.test(adsenseClient ?? '') && /^\d+$/.test(adsenseSlot ?? '')
 
 const positionClass = (position: number) => {
   if (position === 1) return 'champion'
@@ -60,6 +70,51 @@ function StandingsTable({ rows }: { rows: StandingRow[] }) {
 
 function EmptyState({ text }: { text: string }) {
   return <div className="empty"><CircleAlert size={22} /><p>{text}</p></div>
+}
+
+function AdBanner() {
+  const adRef = useRef<HTMLModElement>(null)
+
+  useEffect(() => {
+    const ad = adRef.current
+    if (!adsenseConfigured || !adsenseClient || !ad || ad.dataset.initialized) return
+
+    ad.dataset.initialized = 'true'
+    if (!document.getElementById('adsense-script')) {
+      const script = document.createElement('script')
+      script.id = 'adsense-script'
+      script.async = true
+      script.crossOrigin = 'anonymous'
+      script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(adsenseClient)}`
+      document.head.appendChild(script)
+    }
+
+    window.adsbygoogle = window.adsbygoogle ?? []
+    window.adsbygoogle.push({})
+  }, [])
+
+  if (!adsenseConfigured) {
+    return (
+      <aside className="ad-banner ad-placeholder" aria-label="Espacio publicitario">
+        <span>PUBLICIDAD</span>
+        <div><Shield size={23} /><strong>Espacio publicitario</strong></div>
+      </aside>
+    )
+  }
+
+  return (
+    <aside className="ad-banner ad-banner-live" aria-label="Publicidad">
+      <span>PUBLICIDAD</span>
+      <ins
+        ref={adRef}
+        className="adsbygoogle"
+        data-ad-client={adsenseClient}
+        data-ad-slot={adsenseSlot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+    </aside>
+  )
 }
 
 function LeagueView({ data, season }: { data: FootballData; season: SeasonDefinition }) {
@@ -209,7 +264,7 @@ function App() {
           <div className="hero-number"><span>20</span><div>CLUBES<br /><b>UNA LIGA</b></div></div>
         </section>
 
-        <aside className="ad-banner"><span>ESPACIO PUBLICITARIO</span><div><Shield size={23} /><strong>Tu marca puede jugar acá</strong></div><a href="mailto:publicidad@futbolargentinorealista.com">Contactar <ExternalLink size={13} /></a></aside>
+        <AdBanner />
 
         <section className="content-card">
           <div className="toolbar">

@@ -72,6 +72,8 @@ Registros previstos en la zona:
 
 - Será la red publicitaria cuando el dominio esté conectado y el sitio aprobado.
 - Requerirá páginas legales, consentimiento, código de verificación y `ads.txt`.
+- El Publisher ID, la verificación del sitio y `ads.txt` están integrados.
+- El bloque responsivo empieza a solicitar anuncios cuando recibe `ADSENSE_SLOT` durante el build.
 - El identificador público será del tipo `ca-pub-...`; las credenciales nunca se guardan en el repositorio.
 
 ## Estado actual
@@ -82,9 +84,9 @@ Registros previstos en la zona:
 | Datos automáticos | Activo, cada 6 horas |
 | GitHub Pages | Activo en la URL temporal |
 | Dominio comprado | Activo en NIC Argentina |
-| Cloudflare DNS | Delegado en NIC; propagación en curso |
-| Dominio conectado a GitHub | Configurado; pendiente de validación DNS |
-| HTTPS del dominio | Pendiente de propagación DNS |
+| Cloudflare DNS | Activo; registros públicos verificados |
+| Dominio conectado a GitHub | DNS listo; falta guardar el dominio en Settings → Pages |
+| HTTPS del dominio | Pendiente de validación y emisión del certificado por GitHub |
 | Google AdSense | Pendiente de dominio y aprobación |
 
 ## Direcciones previstas
