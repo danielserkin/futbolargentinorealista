@@ -42,6 +42,17 @@ GitHub Pages
 - No guarda el código ni reemplaza el hosting.
 - Puede aportar resolución DNS rápida, HTTPS y protección básica.
 
+Servidores DNS asignados y delegados desde NIC Argentina:
+
+- `drake.ns.cloudflare.com`
+- `uma.ns.cloudflare.com`
+
+Registros previstos en la zona:
+
+- Cuatro registros `A` para el dominio raíz hacia las IP oficiales de GitHub Pages.
+- Un registro `CNAME` de `www` hacia `danielserkin.github.io`.
+- Todos permanecen inicialmente en modo **DNS only**.
+
 ### GitHub
 
 - El repositorio contiene todo el código y la documentación.
@@ -71,9 +82,9 @@ GitHub Pages
 | Datos automáticos | Activo, cada 6 horas |
 | GitHub Pages | Activo en la URL temporal |
 | Dominio comprado | Activo en NIC Argentina |
-| Cloudflare DNS | Pendiente de delegación |
-| Dominio conectado a GitHub | Pendiente |
-| HTTPS del dominio | Pendiente de DNS |
+| Cloudflare DNS | Delegado en NIC; propagación en curso |
+| Dominio conectado a GitHub | Configurado; pendiente de validación DNS |
+| HTTPS del dominio | Pendiente de propagación DNS |
 | Google AdSense | Pendiente de dominio y aprobación |
 
 ## Direcciones previstas
