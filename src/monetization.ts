@@ -1,7 +1,7 @@
 export interface MonetizationState {
   enabled: boolean
   configured: boolean
-  view: 'liga' | 'copa' | 'supercopa'
+  view: 'liga' | 'clubes' | 'copa' | 'supercopa'
   hasData: boolean
   hasError: boolean
   standingCount: number

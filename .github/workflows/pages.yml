@@ -20,6 +20,12 @@ jobs:
       VITE_ADSENSE_CLIENT: ca-pub-4747589340489317
       VITE_ADSENSE_SLOT: ${{ vars.ADSENSE_SLOT }}
       VITE_ADSENSE_ENABLED: ${{ vars.ADSENSE_ENABLED }}
+      VITE_AD_PROVIDER: ${{ vars.AD_PROVIDER }}
+      VITE_ADS_ENABLED: ${{ vars.ADS_ENABLED }}
+      VITE_ADSTERRA_DESKTOP_KEY: ${{ vars.ADSTERRA_DESKTOP_KEY }}
+      VITE_ADSTERRA_DESKTOP_SCRIPT: ${{ vars.ADSTERRA_DESKTOP_SCRIPT }}
+      VITE_ADSTERRA_MOBILE_KEY: ${{ vars.ADSTERRA_MOBILE_KEY }}
+      VITE_ADSTERRA_MOBILE_SCRIPT: ${{ vars.ADSTERRA_MOBILE_SCRIPT }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

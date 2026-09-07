@@ -68,14 +68,15 @@ Registros previstos en la zona:
 - Se publica una instantánea local para mejorar velocidad y estabilidad.
 - Sólo se computan partidos de fase regular; los playoffs quedan excluidos.
 
-### Google AdSense
+### Publicidad
 
-- Será la red publicitaria cuando el dominio esté conectado y el sitio aprobado.
-- Requerirá páginas legales, consentimiento, código de verificación y `ads.txt`.
-- El Publisher ID, la verificación del sitio y `ads.txt` están integrados.
-- El bloque responsivo empieza a solicitar anuncios cuando recibe `ADSENSE_SLOT` durante el build.
+- La capa de monetización puede usar Google AdSense o banners clásicos de Adsterra.
+- El proveedor se selecciona con `AD_PROVIDER`; todos los anuncios permanecen apagados mientras `ADS_ENABLED` sea falso.
+- AdSense utiliza el Publisher ID y el slot responsivo. Adsterra admite una unidad 728×90 para escritorio y otra 320×50 para móvil.
+- Las unidades de Adsterra se ejecutan en iframes aislados para que su script no modifique la aplicación.
+- Los bloques sólo solicitan anuncios en la Liga, después de cargar correctamente una tabla con contenido suficiente.
 - Acerca del sitio, Contacto y Privacidad/cookies son páginas estáticas incluidas en cada despliegue.
-- El identificador público será del tipo `ca-pub-...`; las credenciales nunca se guardan en el repositorio.
+- Los identificadores de anuncio son públicos; las credenciales de las cuentas nunca se guardan en el repositorio.
 
 ## Estado actual
 
@@ -88,7 +89,8 @@ Registros previstos en la zona:
 | Cloudflare DNS | Activo; registros públicos verificados |
 | Dominio conectado a GitHub | DNS listo; falta guardar el dominio en Settings → Pages |
 | HTTPS del dominio | Pendiente de validación y emisión del certificado por GitHub |
-| Google AdSense | En revisión; anuncios desactivados y verificación por metaetiqueta |
+| Google AdSense | Rechazado por contenido de poco valor; puede volver a solicitarse después de indexar las mejoras |
+| Adsterra | Integración preparada; faltan cuenta, unidades y revisión visual antes de activarla |
 
 ## Direcciones previstas
 

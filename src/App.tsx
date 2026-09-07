@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CalendarDays, ChevronDown, CircleAlert, Clock3, Info, Shield, Sparkles, Trophy } from 'lucide-react'
+import { Activity, CalendarDays, ChevronDown, CircleAlert, Clock3, Goal, Info, Share2, Shield, Sparkles, Swords, TrendingUp, Trophy } from 'lucide-react'
 import { calculateSeasonStandings, inDateRange } from './standings'
+import { biggestWin, currentStreak, latestCompleted, leaderBy, nextScheduled, positionHistory, recentForm, teamMatches } from './insights'
 import { canShowAds } from './monetization'
 import type { FootballData, Match, SeasonDefinition, StandingRow, Team } from './types'
 
@@ -18,7 +19,7 @@ const roundNames: Record<string, string> = {
   'round-of-64': '32avos de final',
 }
 
-export type View = 'liga' | 'copa' | 'supercopa'
+export type View = 'liga' | 'clubes' | 'copa' | 'supercopa'
 
 declare global {
   interface Window {
@@ -30,6 +31,15 @@ const adsenseClient = import.meta.env.VITE_ADSENSE_CLIENT?.trim()
 const adsenseSlot = import.meta.env.VITE_ADSENSE_SLOT?.trim()
 const adsenseEnabled = import.meta.env.VITE_ADSENSE_ENABLED === 'true'
 const adsenseConfigured = /^ca-pub-\d+$/.test(adsenseClient ?? '') && /^\d+$/.test(adsenseSlot ?? '')
+const adProvider = import.meta.env.VITE_AD_PROVIDER === 'adsterra' ? 'adsterra' : 'adsense'
+const adsEnabled = import.meta.env.VITE_ADS_ENABLED === 'true' || adsenseEnabled
+const adsterraDesktopKey = import.meta.env.VITE_ADSTERRA_DESKTOP_KEY?.trim()
+const adsterraDesktopScript = import.meta.env.VITE_ADSTERRA_DESKTOP_SCRIPT?.trim()
+const adsterraMobileKey = import.meta.env.VITE_ADSTERRA_MOBILE_KEY?.trim()
+const adsterraMobileScript = import.meta.env.VITE_ADSTERRA_MOBILE_SCRIPT?.trim()
+const validAdsterraUnit = (key?: string, script?: string) => /^[a-zA-Z0-9]+$/.test(key ?? '') && /^https:\/\//.test(script ?? '')
+const adsterraConfigured = validAdsterraUnit(adsterraDesktopKey, adsterraDesktopScript) || validAdsterraUnit(adsterraMobileKey, adsterraMobileScript)
+const adsConfigured = adProvider === 'adsterra' ? adsterraConfigured : adsenseConfigured
 
 const positionClass = (position: number) => {
   if (position === 1) return 'champion'
@@ -48,7 +58,7 @@ function TeamBadge({ team, small = false }: { team: Team; small?: boolean }) {
   )
 }
 
-function StandingsTable({ rows }: { rows: StandingRow[] }) {
+function StandingsTable({ rows, onTeamSelect }: { rows: StandingRow[]; onTeamSelect?: (teamId: string) => void }) {
   return (
     <div className="table-shell">
       <table>
@@ -59,7 +69,7 @@ function StandingsTable({ rows }: { rows: StandingRow[] }) {
           {rows.map((row) => (
             <tr key={row.id} className={positionClass(row.position)}>
               <td><span className="position"><i />{row.position}</span></td>
-              <td><div className="team-cell"><TeamBadge team={row} /><span>{row.name}</span>{row.position === 1 && <Trophy size={15} />}</div></td>
+              <td><button className="team-cell team-link" onClick={() => onTeamSelect?.(row.id)}><TeamBadge team={row} /><span>{row.name}</span>{row.position === 1 && <Trophy size={15} />}</button></td>
               <td>{row.played}</td><td>{row.won}</td><td>{row.drawn}</td><td>{row.lost}</td>
               <td>{row.goalsFor}</td><td>{row.goalsAgainst}</td><td>{row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}</td><td className="points">{row.points}</td>
             </tr>
@@ -74,12 +84,126 @@ function EmptyState({ text }: { text: string }) {
   return <div className="empty"><CircleAlert size={22} /><p>{text}</p></div>
 }
 
-function AdBanner() {
+function FormDots({ results }: { results: ReturnType<typeof recentForm> }) {
+  return <span className="form-dots" aria-label={`Últimos resultados: ${results.join(', ')}`}>
+    {results.map((result, index) => <i className={result.toLowerCase()} key={`${result}-${index}`}>{result}</i>)}
+  </span>
+}
+
+function LeaguePulse({ matches, rows }: { matches: Match[]; rows: StandingRow[] }) {
+  const attack = leaderBy(rows, 'goalsFor')
+  const defense = leaderBy(rows.filter((row) => row.played > 0), 'goalsAgainst', true)
+  const inForm = [...rows].sort((a, b) => {
+    const points = (row: StandingRow) => recentForm(matches, row.id).reduce((total, result) => total + (result === 'G' ? 3 : result === 'E' ? 1 : 0), 0)
+    return points(b) - points(a) || b.goalDifference - a.goalDifference
+  })[0] ?? null
+  const widest = biggestWin(matches)
+  const recent = latestCompleted(matches, 3)
+  const upcoming = nextScheduled(matches, 3)
+
+  return (
+    <section className="league-pulse" aria-labelledby="pulse-title">
+      <div className="block-heading"><div><span className="eyebrow">RADAR DE LA TEMPORADA</span><h3 id="pulse-title">La liga, de un vistazo</h3></div><p>Estadísticas calculadas sobre los partidos regulares.</p></div>
+      <div className="insight-grid">
+        <article><Goal size={19} /><small>Mejor ataque</small><strong>{attack?.name ?? '—'}</strong><span>{attack ? `${attack.goalsFor} goles` : 'Sin datos'}</span></article>
+        <article><Shield size={19} /><small>Mejor defensa</small><strong>{defense?.name ?? '—'}</strong><span>{defense ? `${defense.goalsAgainst} recibidos` : 'Sin datos'}</span></article>
+        <article><TrendingUp size={19} /><small>Mejor forma</small><strong>{inForm?.name ?? '—'}</strong>{inForm && <FormDots results={recentForm(matches, inForm.id)} />}</article>
+        <article><Activity size={19} /><small>Mayor diferencia</small><strong>{widest ? `${widest.home.shortName} ${widest.homeScore}–${widest.awayScore} ${widest.away.shortName}` : '—'}</strong><span>{widest ? new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short', timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date(widest.date)) : 'Sin datos'}</span></article>
+      </div>
+      <div className="schedule-grid">
+        <div><h4>Últimos resultados</h4><div className="mini-match-grid">{recent.map((match) => <MatchCard match={match} key={match.id} />)}</div></div>
+        <div><h4>Lo próximo</h4>{upcoming.length ? <div className="mini-match-grid">{upcoming.map((match) => <MatchCard match={match} key={match.id} />)}</div> : <p className="quiet">No hay próximos partidos confirmados.</p>}</div>
+      </div>
+    </section>
+  )
+}
+
+function PositionChart({ matches, team }: { matches: Match[]; team: StandingRow }) {
+  const history = positionHistory(matches, team.id).slice(-16)
+  if (history.length < 2) return <p className="quiet">La evolución aparecerá cuando haya más fechas disputadas.</p>
+  const maxPosition = Math.max(...history.map((point) => point.position), 2)
+  const points = history.map((point, index) => {
+    const x = 4 + (index / (history.length - 1)) * 92
+    const y = 8 + ((point.position - 1) / (maxPosition - 1)) * 70
+    return `${x},${y}`
+  }).join(' ')
+  return (
+    <div className="position-chart">
+      <svg viewBox="0 0 100 86" role="img" aria-label={`Evolución de posiciones de ${team.name}`} preserveAspectRatio="none">
+        <line x1="4" y1="8" x2="96" y2="8" /><line x1="4" y1="78" x2="96" y2="78" />
+        <polyline points={points} />
+        {history.map((point, index) => {
+          const [x, y] = points.split(' ')[index].split(',')
+          return <circle key={`${point.date}-${index}`} cx={x} cy={y} r="1.5"><title>{point.date}: puesto {point.position}</title></circle>
+        })}
+      </svg>
+      <div><span>Hace {history.length - 1} fechas: <b>{history[0].position}.º</b></span><span>Ahora: <b>{history.at(-1)?.position}.º</b></span></div>
+    </div>
+  )
+}
+
+function ComparisonBar({ label, first, second, lowerWins = false }: { label: string; first: number; second: number; lowerWins?: boolean }) {
+  const max = Math.max(first, second, 1)
+  const firstWins = lowerWins ? first < second : first > second
+  const secondWins = lowerWins ? second < first : second > first
+  return <div className="comparison-row"><span>{label}</span><div><b className={firstWins ? 'winner' : ''}>{first}</b><i style={{ width: `${(first / max) * 100}%` }} /></div><div><i style={{ width: `${(second / max) * 100}%` }} /><b className={secondWins ? 'winner' : ''}>{second}</b></div></div>
+}
+
+function ClubExplorer({ matches, rows, selectedId, onSelect }: { matches: Match[]; rows: StandingRow[]; selectedId: string | null; onSelect: (teamId: string) => void }) {
+  const initialId = selectedId && rows.some((row) => row.id === selectedId) ? selectedId : rows[0]?.id ?? ''
+  const [firstId, setFirstId] = useState(initialId)
+  const [secondId, setSecondId] = useState(rows.find((row) => row.id !== initialId)?.id ?? '')
+  const [shared, setShared] = useState(false)
+
+  useEffect(() => {
+    if (selectedId && rows.some((row) => row.id === selectedId)) setFirstId(selectedId)
+  }, [selectedId, rows])
+
+  const first = rows.find((row) => row.id === firstId) ?? rows[0]
+  const second = rows.find((row) => row.id === secondId) ?? rows.find((row) => row.id !== first?.id)
+  if (!first) return <EmptyState text="Todavía no hay clubes para explorar." />
+  const clubResults = teamMatches(matches, first.id).filter((match) => match.completed).slice(-6).reverse()
+
+  const changeFirst = (teamId: string) => {
+    setFirstId(teamId)
+    if (teamId === secondId) setSecondId(rows.find((row) => row.id !== teamId)?.id ?? '')
+    onSelect(teamId)
+  }
+  const share = async () => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('vista', 'clubes')
+    url.searchParams.set('club', first.id)
+    try {
+      await navigator.clipboard.writeText(url.toString())
+      setShared(true)
+      window.setTimeout(() => setShared(false), 1800)
+    } catch { window.prompt('Copiá este enlace', url.toString()) }
+  }
+
+  return (
+    <section className="club-explorer" aria-labelledby="club-title">
+      <div className="club-picker"><div><span className="eyebrow">FICHA DEL CLUB</span><h2 id="club-title">Explorador de equipos</h2></div><label>Elegí un club<select value={first.id} onChange={(event) => changeFirst(event.target.value)}>{rows.map((row) => <option value={row.id} key={row.id}>{row.name}</option>)}</select></label></div>
+      <div className="club-hero">
+        <TeamBadge team={first} />
+        <div><small>PUESTO {first.position}</small><h3>{first.name}</h3><FormDots results={recentForm(matches, first.id)} /></div>
+        <div className="club-points"><strong>{first.points}</strong><span>PUNTOS</span></div>
+        <button className="share-button" onClick={share}><Share2 size={15} />{shared ? 'Enlace copiado' : 'Compartir'}</button>
+      </div>
+      <div className="club-stat-grid">
+        <div><span>Partidos</span><strong>{first.played}</strong></div><div><span>Ganados</span><strong>{first.won}</strong></div><div><span>Empatados</span><strong>{first.drawn}</strong></div><div><span>Perdidos</span><strong>{first.lost}</strong></div><div><span>Diferencia</span><strong>{first.goalDifference > 0 ? `+${first.goalDifference}` : first.goalDifference}</strong></div><div><span>Racha</span><strong>{currentStreak(matches, first.id)}</strong></div>
+      </div>
+      <div className="club-detail-grid"><div><h4>Evolución reciente</h4><PositionChart matches={matches} team={first} /></div><div><h4>Últimos partidos</h4><div className="mini-match-grid">{clubResults.map((match) => <MatchCard match={match} key={match.id} />)}</div></div></div>
+      {second && <section className="comparison"><div className="block-heading"><div><span className="eyebrow">CARA A CARA</span><h3><Swords size={20} /> Comparador</h3></div><select value={second.id} onChange={(event) => setSecondId(event.target.value)} aria-label="Segundo club">{rows.filter((row) => row.id !== first.id).map((row) => <option value={row.id} key={row.id}>{row.name}</option>)}</select></div><div className="comparison-names"><strong>{first.shortName}</strong><span>VS</span><strong>{second.shortName}</strong></div><ComparisonBar label="Puntos" first={first.points} second={second.points} /><ComparisonBar label="Victorias" first={first.won} second={second.won} /><ComparisonBar label="Goles a favor" first={first.goalsFor} second={second.goalsFor} /><ComparisonBar label="Goles recibidos" first={first.goalsAgainst} second={second.goalsAgainst} lowerWins /></section>}
+    </section>
+  )
+}
+
+function AdsenseBanner() {
   const adRef = useRef<HTMLModElement>(null)
 
   useEffect(() => {
     const ad = adRef.current
-    if (!adsenseEnabled || !adsenseConfigured || !adsenseClient || !ad || ad.dataset.initialized) return
+    if (!adsEnabled || !adsenseConfigured || !adsenseClient || !ad || ad.dataset.initialized) return
 
     ad.dataset.initialized = 'true'
     if (!document.getElementById('adsense-script')) {
@@ -96,8 +220,7 @@ function AdBanner() {
   }, [])
 
   return (
-    <aside className="ad-banner ad-banner-live" aria-label="Publicidad">
-      <span>PUBLICIDAD</span>
+    <>
       <ins
         ref={adRef}
         className="adsbygoogle"
@@ -106,8 +229,18 @@ function AdBanner() {
         data-ad-format="auto"
         data-full-width-responsive="true"
       />
-    </aside>
+    </>
   )
+}
+
+function AdsterraUnit({ adKey, script, width, height, className }: { adKey?: string; script?: string; width: number; height: number; className: string }) {
+  if (!validAdsterraUnit(adKey, script)) return null
+  const documentHtml = `<!doctype html><html><head><style>html,body{margin:0;background:transparent;overflow:hidden}</style></head><body><script>atOptions={key:'${adKey}',format:'iframe',height:${height},width:${width},params:{}};</script><script src="${script}"></script></body></html>`
+  return <iframe className={className} title="Publicidad" width={width} height={height} srcDoc={documentHtml} sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerPolicy="strict-origin-when-cross-origin" />
+}
+
+function AdBanner() {
+  return <aside className="ad-banner ad-banner-live" aria-label="Publicidad"><span>PUBLICIDAD</span>{adProvider === 'adsterra' ? <div className="adsterra-units"><AdsterraUnit adKey={adsterraDesktopKey} script={adsterraDesktopScript} width={728} height={90} className="adsterra-desktop" /><AdsterraUnit adKey={adsterraMobileKey} script={adsterraMobileScript} width={320} height={50} className="adsterra-mobile" /></div> : <AdsenseBanner />}</aside>
 }
 
 function EditorialOverview() {
@@ -119,6 +252,7 @@ function EditorialOverview() {
         <p>Fútbol Argentino Realista reorganiza resultados verdaderos para responder una pregunta concreta: cómo quedaría el fútbol local si todos los clubes compitieran en una temporada larga, con reglas estables y sin sumar los playoffs.</p>
       </div>
       <div className="editorial-grid">
+        <article><h3>Explorá cada club</h3><p>Consultá forma reciente, rachas, evolución de posición y compará dos equipos bajo exactamente las mismas reglas y temporada.</p><a href="/?vista=clubes">Abrir clubes y comparador</a></article>
         <article><h3>Reglas transparentes</h3><p>Cada victoria vale tres puntos y cada empate uno. La diferencia de gol, los goles a favor y las victorias resuelven los empates. Los clubes que no disputaron ambos semestres quedan identificados fuera de la tabla principal.</p><a href="/formato.html">Ver el formato completo</a></article>
         <article><h3>Resultados verificables</h3><p>La tabla se calcula a partir del marcador público de ESPN. Un proceso automático normaliza equipos, fechas y marcadores, excluye fases eliminatorias y valida la instantánea antes de publicarla.</p><a href="/metodologia.html">Leer la metodología</a></article>
         <article><h3>Una temporada terminada</h3><p>La edición 2025/26 reunió 480 partidos regulares de dos semestres. Boca Juniors terminó primero por diferencia de gol tras igualar 59 puntos con Rosario Central.</p><a href="/temporada-2025-26.html">Analizar la temporada 2025/26</a></article>
@@ -128,7 +262,7 @@ function EditorialOverview() {
   )
 }
 
-function LeagueView({ data, season }: { data: FootballData; season: SeasonDefinition }) {
+function LeagueView({ data, season, onTeamSelect }: { data: FootballData; season: SeasonDefinition; onTeamSelect: (teamId: string) => void }) {
   const matches = useMemo(() => data.league.filter((match) => inDateRange(match.date, season.start, season.end)), [data, season])
   const seasonTable = useMemo(() => calculateSeasonStandings(matches), [matches])
   const standings = seasonTable.standings
@@ -143,7 +277,7 @@ function LeagueView({ data, season }: { data: FootballData; season: SeasonDefini
         <div><span className="eyebrow">TABLA GENERAL · SÓLO FASE REGULAR</span><h2>La liga que debería ser</h2><p>{played} partidos regulares computados · {playoffsExcluded} partidos de playoff excluidos</p></div>
         <div className="status-stack"><span className="regular-pill"><Shield size={12} /> Sin playoffs</span><span className={`season-status ${season.state}`}><i />{season.state === 'en-curso' ? 'En curso' : 'Finalizada'}</span></div>
       </div>
-      {visible.length ? <StandingsTable rows={visible} /> : <EmptyState text="Todavía no hay partidos finalizados en esta temporada." />}
+      {visible.length ? <><LeaguePulse matches={seasonTable.regularMatches} rows={standings} /><StandingsTable rows={visible} onTeamSelect={onTeamSelect} /></> : <EmptyState text="Todavía no hay partidos finalizados en esta temporada." />}
       {excluded.length > 0 && (
         <details className="excluded">
           <summary><span><ChevronDown size={18} /> Excluidos de la liga</span><b>{excluded.length} clubes</b></summary>
@@ -163,6 +297,12 @@ function LeagueView({ data, season }: { data: FootballData; season: SeasonDefini
       <Rules />
     </>
   )
+}
+
+function ClubsView({ data, season, selectedId, onSelect }: { data: FootballData; season: SeasonDefinition; selectedId: string | null; onSelect: (teamId: string) => void }) {
+  const matches = useMemo(() => data.league.filter((match) => inDateRange(match.date, season.start, season.end)), [data, season])
+  const table = useMemo(() => calculateSeasonStandings(matches), [matches])
+  return <ClubExplorer matches={table.regularMatches} rows={table.standings} selectedId={selectedId} onSelect={onSelect} />
 }
 
 function Rules() {
@@ -247,6 +387,7 @@ function App() {
   const [error, setError] = useState(false)
   const [view, setView] = useState<View>('liga')
   const [seasonId, setSeasonId] = useState('2026-27')
+  const [selectedClubId, setSelectedClubId] = useState<string | null>(null)
   const season = seasons.find((item) => item.id === seasonId)!
   const standingCount = useMemo(() => {
     if (!data) return 0
@@ -254,8 +395,8 @@ function App() {
     return calculateSeasonStandings(matches).standings.length
   }, [data, season])
   const showAd = canShowAds({
-    enabled: adsenseEnabled,
-    configured: adsenseConfigured,
+    enabled: adsEnabled,
+    configured: adsConfigured,
     view,
     hasData: Boolean(data),
     hasError: error,
@@ -269,15 +410,57 @@ function App() {
     }).then(setData).catch(() => setError(true))
   }, [])
 
+  useEffect(() => {
+    const readRoute = () => {
+      const params = new URLSearchParams(window.location.search)
+      const requestedView = params.get('vista')
+      if (requestedView === 'liga' || requestedView === 'clubes' || requestedView === 'copa' || requestedView === 'supercopa') setView(requestedView)
+      const requestedSeason = params.get('temporada')
+      if (seasons.some((item) => item.id === requestedSeason)) setSeasonId(requestedSeason!)
+      setSelectedClubId(params.get('club'))
+    }
+    readRoute()
+    window.addEventListener('popstate', readRoute)
+    return () => window.removeEventListener('popstate', readRoute)
+  }, [])
+
+  useEffect(() => {
+    const labels: Record<View, string> = { liga: 'Tabla', clubes: 'Clubes y comparador', copa: 'Copa Argentina', supercopa: 'Supercopa' }
+    document.title = `${labels[view]} ${season.label} | Fútbol Argentino Realista`
+  }, [view, season])
+
+  const navigate = (nextView: View, clubId: string | null = selectedClubId) => {
+    setView(nextView)
+    setSelectedClubId(clubId)
+    const url = new URL(window.location.href)
+    if (nextView === 'liga') url.searchParams.delete('vista')
+    else url.searchParams.set('vista', nextView)
+    if (nextView === 'clubes' && clubId) url.searchParams.set('club', clubId)
+    else url.searchParams.delete('club')
+    if (seasonId === '2026-27') url.searchParams.delete('temporada')
+    else url.searchParams.set('temporada', seasonId)
+    window.history.pushState({}, '', url)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const changeSeason = (nextSeason: string) => {
+    setSeasonId(nextSeason)
+    const url = new URL(window.location.href)
+    if (nextSeason === '2026-27') url.searchParams.delete('temporada')
+    else url.searchParams.set('temporada', nextSeason)
+    window.history.replaceState({}, '', url)
+  }
+
   return (
     <div className="app">
       <div className="topline" />
       <header>
         <a className="brand" href="/"><span className="brand-mark"><span>AR</span></span><div><strong>FÚTBOL ARGENTINO</strong><small>REALISTA</small></div></a>
         <nav aria-label="Secciones">
-          <button className={view === 'liga' ? 'active' : ''} onClick={() => setView('liga')}>Liga</button>
-          <button className={view === 'copa' ? 'active' : ''} onClick={() => setView('copa')}>Copa Argentina</button>
-          <button className={view === 'supercopa' ? 'active' : ''} onClick={() => setView('supercopa')}>Supercopa</button>
+          <button className={view === 'liga' ? 'active' : ''} onClick={() => navigate('liga')}>Liga</button>
+          <button className={view === 'clubes' ? 'active' : ''} onClick={() => navigate('clubes')}>Clubes</button>
+          <button className={view === 'copa' ? 'active' : ''} onClick={() => navigate('copa')}>Copa Argentina</button>
+          <button className={view === 'supercopa' ? 'active' : ''} onClick={() => navigate('supercopa')}>Supercopa</button>
         </nav>
         <div className="live-pill"><i /> DATOS REALES</div>
       </header>
@@ -292,14 +475,15 @@ function App() {
 
         <section className="content-card">
           <div className="toolbar">
-            <div className="mobile-tabs"><button className={view === 'liga' ? 'active' : ''} onClick={() => setView('liga')}>Liga</button><button className={view === 'copa' ? 'active' : ''} onClick={() => setView('copa')}>Copa</button><button className={view === 'supercopa' ? 'active' : ''} onClick={() => setView('supercopa')}>Supercopa</button></div>
-            {view !== 'copa' && <label><CalendarDays size={17} /><span>Temporada</span><select value={seasonId} onChange={(event) => setSeasonId(event.target.value)}>{seasons.map((item) => <option value={item.id} key={item.id}>{item.label}</option>)}</select></label>}
+            <div className="mobile-tabs"><button className={view === 'liga' ? 'active' : ''} onClick={() => navigate('liga')}>Liga</button><button className={view === 'clubes' ? 'active' : ''} onClick={() => navigate('clubes')}>Clubes</button><button className={view === 'copa' ? 'active' : ''} onClick={() => navigate('copa')}>Copa</button><button className={view === 'supercopa' ? 'active' : ''} onClick={() => navigate('supercopa')}>Supercopa</button></div>
+            {view !== 'copa' && <label><CalendarDays size={17} /><span>Temporada</span><select value={seasonId} onChange={(event) => changeSeason(event.target.value)}>{seasons.map((item) => <option value={item.id} key={item.id}>{item.label}</option>)}</select></label>}
             {data && <span className="updated"><Clock3 size={14} /> Datos verificados {new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date(data.metadata.updatedAt))}</span>}
           </div>
           <div className="content-body">
             {error && <EmptyState text="No pudimos cargar los datos. Probá de nuevo en unos minutos." />}
             {!data && !error && <div className="loading"><i /><span>Cargando resultados reales…</span></div>}
-            {data && view === 'liga' && <LeagueView data={data} season={season} />}
+            {data && view === 'liga' && <LeagueView data={data} season={season} onTeamSelect={(teamId) => navigate('clubes', teamId)} />}
+            {data && view === 'clubes' && <ClubsView data={data} season={season} selectedId={selectedClubId} onSelect={(teamId) => navigate('clubes', teamId)} />}
             {data && view === 'copa' && <CupView data={data} />}
             {data && view === 'supercopa' && <SupercupView data={data} season={season} />}
           </div>
@@ -311,7 +495,7 @@ function App() {
         <p>Sitio independiente. No afiliado a AFA ni a sus competencias. Datos deportivos de acceso público.</p>
         <div className="footer-end">
           <b>Hecho en Argentina 🇦🇷</b>
-          <div className="footer-links"><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
+          <div className="footer-links"><a href="/herramientas.html">Estadísticas</a><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
         </div>
       </footer>
     </div>

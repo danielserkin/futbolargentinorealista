@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Última actualización: **22 de agosto de 2026 (UTC)**.
+Última actualización: **7 de septiembre de 2026 (UTC)**.
 
 ## Funcionando
 
@@ -10,7 +10,11 @@
 - Todos los clubes clasificados de 2025/26 tienen 32 PJ.
 - Copa Argentina, Supercopa, excluidos y participación parcial implementados.
 - Partidos recientes comprobados automáticamente cada treinta minutos y actualización completa diaria.
-- Pruebas: 6 aprobadas.
+- Radar de temporada con mejor ataque, defensa, forma, mayor diferencia, resultados recientes y próximos partidos.
+- Fichas compartibles de clubes, rachas, evolución de posiciones y comparador cara a cara.
+- Guía editorial de estadísticas incorporada al sitemap.
+- Integración intercambiable para AdSense o banners de Adsterra, desactivada por defecto.
+- Pruebas: 23 aprobadas.
 - GitHub Pages publicado en la URL temporal.
 - Último workflow verificado: exitoso.
 
@@ -49,17 +53,21 @@
 
 ## Publicidad pendiente
 
-- El bloque responsivo de Google AdSense está desactivado durante la revisión mediante `VITE_ADSENSE_ENABLED`.
+- Google AdSense rechazó el sitio por “contenido de poco valor” el 6 de septiembre de 2026.
+- El bloque responsivo de Google AdSense permanece desactivado mediante `VITE_ADSENSE_ENABLED`.
 - La portada se verifica con la metaetiqueta y no carga el script publicitario ni muestra espacios vacíos.
 - Publisher ID conectado: `ca-pub-4747589340489317`.
 - La metaetiqueta y `ads.txt` están integrados; el script sólo se inyectará después de la aprobación y con contenido suficiente.
 - El workflow toma el identificador del bloque desde la variable de GitHub `ADSENSE_SLOT`.
 - Acerca del sitio, Contacto y Privacidad/cookies están publicados y enlazados desde el pie.
 - La política incluye un acceso para volver a abrir las preferencias de la CMP de Google.
-- Cuando el dominio y HTTPS estén activos:
-  1. Publicar los cambios y esperar a que Google rastree las páginas editoriales.
-  2. Solicitar una nueva revisión de `futbolrealista.com.ar` en Google AdSense.
-  3. Después de la aprobación, cargar `ADSENSE_SLOT` y `ADSENSE_ENABLED=true` en GitHub Actions Variables.
+- Como alternativa, el sitio admite dos unidades de banner de Adsterra (escritorio y móvil) aisladas dentro de iframes.
+- Próximos pasos:
+  1. Publicar las nuevas herramientas y comprobarlas en producción.
+  2. Abrir una cuenta de publisher y solicitar únicamente banners clásicos de Adsterra.
+  3. Cargar `AD_PROVIDER=adsterra`, las claves/URLs de las dos unidades y `ADS_ENABLED=true` en GitHub Actions Variables.
+  4. Revisar en producción la calidad de las creatividades antes de mantenerlas activas.
+  5. Esperar a que Google indexe el nuevo contenido antes de solicitar otra revisión de AdSense.
 
 ## Seguridad
 
