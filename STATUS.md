@@ -14,7 +14,7 @@
 - Fichas compartibles de clubes, rachas, evolución de posiciones y comparador cara a cara.
 - Guía editorial de estadísticas incorporada al sitemap.
 - Integración intercambiable para AdSense o banners de Adsterra, desactivada por defecto.
-- Pruebas: 34 aprobadas; build con validación de HTML, fichas, sitemap, RSS e imágenes sociales.
+- Pruebas: 37 aprobadas; build con validación de HTML, fichas, sitemap, RSS e imágenes sociales.
 - GitHub Pages publicado en el dominio propio con HTTPS válido.
 - Último workflow verificado: exitoso.
 

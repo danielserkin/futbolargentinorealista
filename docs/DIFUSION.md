@@ -2,6 +2,13 @@
 
 Actualizado el 8 de septiembre de 2026. Objetivo: atraer lectores interesados en fútbol para aumentar el uso del sitio y las impresiones legítimas de sus banners.
 
+## Resultado verificado del primer despliegue
+
+- Versión publicada desde el commit `7978b30`: [ejecución exitosa](https://github.com/danielserkin/futbolargentinorealista/actions/runs/34179674334).
+- IndexNow recibió 35 URLs a las 02:20:21 UTC del 8 de septiembre de 2026 y respondió HTTP 202. El comprobante indica `accepted: true`, `indexed: not_verified`: queda pendiente la validación del buscador, no hay visitas atribuibles verificadas.
+- Prueba de navegador en el dominio real aprobada: tabla y fichas sin JavaScript, navegación interactiva, vuelta atrás, temporada en enlaces y diseño móvil. Las solicitudes de analítica y publicidad fueron bloqueadas en esta prueba funcional.
+- La selección de formato del banner dentro del iframe ahora la comunica la página contenedora, evitando que el ancho inicial provisional cargue una unidad móvil en escritorio. Las dos unidades originales se mantienen.
+
 ## Qué se automatiza
 
 - El mismo despliegue que actualiza los partidos genera la tabla completa en HTML, 32 fichas de clubes, el directorio, Novedades, vistas previas PNG y un feed RSS.
