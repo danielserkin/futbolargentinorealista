@@ -5,6 +5,7 @@ const index = await readFile(new URL('index.html', dist), 'utf8')
 const sitemap = await readFile(new URL('sitemap.xml', dist), 'utf8')
 const requiredPages = ['metodologia.html', 'formato.html', 'herramientas.html', 'temporada-2025-26.html']
 const adsterraLoader = await readFile(new URL('adsterra-static.js', dist), 'utf8')
+const adsterraFrame = await readFile(new URL('adsterra-frame.html', dist), 'utf8')
 
 if (index.includes('<div id="root"></div>')) throw new Error('Homepage root is empty after prerender')
 if (!index.includes('Una tabla comparable, no otro torneo inventado')) throw new Error('Editorial homepage content is missing')
@@ -21,5 +22,6 @@ for (const page of requiredPages) {
 }
 
 if (!adsterraLoader.includes('728') || !adsterraLoader.includes('320')) throw new Error('Responsive Adsterra units are incomplete')
+if (!adsterraFrame.includes('/adsterra-static.js') || !adsterraFrame.includes('noindex')) throw new Error('Adsterra frame is incomplete')
 
 console.log('Validated prerendered content, AdSense review mode and editorial URLs.')

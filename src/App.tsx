@@ -233,14 +233,24 @@ function AdsenseBanner() {
   )
 }
 
-function AdsterraUnit({ adKey, script, width, height, className }: { adKey?: string; script?: string; width: number; height: number; className: string }) {
-  if (!validAdsterraUnit(adKey, script)) return null
-  const documentHtml = `<!doctype html><html><head><style>html,body{margin:0;background:transparent;overflow:hidden}</style></head><body><script>atOptions={key:'${adKey}',format:'iframe',height:${height},width:${width},params:{}};</script><script src="${script}"></script></body></html>`
-  return <iframe className={className} title="Publicidad" width={width} height={height} srcDoc={documentHtml} sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerPolicy="strict-origin-when-cross-origin" />
+function AdsterraUnit() {
+  const [mobile, setMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 600px)').matches)
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 600px)')
+    const update = () => setMobile(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  const width = mobile ? 320 : 728
+  const height = mobile ? 50 : 90
+  return <iframe className="adsterra-frame" title="Publicidad" width={width} height={height} src={`${import.meta.env.BASE_URL}adsterra-frame.html`} sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerPolicy="strict-origin-when-cross-origin" />
 }
 
 function AdBanner() {
-  return <aside className="ad-banner ad-banner-live" aria-label="Publicidad"><span>PUBLICIDAD</span>{adProvider === 'adsterra' ? <div className="adsterra-units"><AdsterraUnit adKey={adsterraDesktopKey} script={adsterraDesktopScript} width={728} height={90} className="adsterra-desktop" /><AdsterraUnit adKey={adsterraMobileKey} script={adsterraMobileScript} width={320} height={50} className="adsterra-mobile" /></div> : <AdsenseBanner />}</aside>
+  return <aside className="ad-banner ad-banner-live" aria-label="Publicidad"><span>PUBLICIDAD</span>{adProvider === 'adsterra' ? <div className="adsterra-units"><AdsterraUnit /></div> : <AdsenseBanner />}</aside>
 }
 
 function EditorialOverview() {
