@@ -1,0 +1,20 @@
+.season-article { margin-top: 24px; }
+.season-article h2 { margin-top: 8px; }
+h3 { margin-top: 26px; font-size: 16px; }
+.sharing { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+.sharing > span { color: #a1b1be; font-size: 12px; margin-right: auto; }
+.sharing .button { margin: 0; }
+.club-directory { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.club-directory li { margin: 0; }
+.club-directory a { display: block; min-height: 90px; padding: 20px; border: 1px solid var(--line); background: rgba(10,23,37,.88); color: #eaf2fa; font-weight: 700; text-decoration: none; }
+.club-directory a:hover { border-color: var(--sky); }
+.club-directory span { display: block; margin-top: 7px; color: var(--sky); font-size: 11px; font-weight: 400; }
+.results-list { padding: 0; list-style: none; }
+.results-list li { display: flex; gap: 18px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.results-list time { flex: 0 0 95px; font-size: 11px; }
+.results-list strong { display: inline-block; margin: 0 8px; color: white; white-space: nowrap; }
+.results-list a { color: #b9d9ec; text-decoration: none; }
+.leaders { padding-left: 24px; }
+.leaders li { padding: 8px; }
+.leaders strong { float: right; font-size: 12px; }
+@media (max-width: 600px) { .club-directory { grid-template-columns: 1fr; } .results-list li { display: block; } .results-list time { display: block; } .stat-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } .stat-grid div { padding: 12px 8px; } .leaders strong { display: block; float: none; } }

@@ -75,7 +75,7 @@ Registros previstos en la zona:
 - AdSense utiliza el Publisher ID y el slot responsivo. Adsterra admite una unidad 728×90 para escritorio y otra 320×50 para móvil.
 - Las unidades de Adsterra se ejecutan en iframes aislados para que su script no modifique la aplicación.
 - La aplicación solicita un bloque después de cargar correctamente una tabla con contenido suficiente. Formato, Metodología, Estadísticas y el análisis de temporada incluyen una única unidad responsive; las páginas legales, Contacto y Acerca permanecen sin anuncios.
-- Acerca del sitio, Contacto y Privacidad/cookies son páginas estáticas incluidas en cada despliegue.
+- Acerca del sitio, Contacto y Privacidad/cookies son páginas estáticas incluidas en cada despliegue. Las nuevas fichas de clubes, el directorio y Novedades usan las mismas unidades responsivas de Adsterra.
 - Los identificadores de anuncio son públicos; las credenciales de las cuentas nunca se guardan en el repositorio.
 
 ## Estado actual
@@ -84,11 +84,11 @@ Registros previstos en la zona:
 | --- | --- |
 | Aplicación y tabla | Activo |
 | Datos automáticos | Activo, cada 30 minutos; sincronización completa diaria |
-| GitHub Pages | Activo en la URL temporal |
+| GitHub Pages | Activo en el dominio propio |
 | Dominio comprado | Activo en NIC Argentina |
 | Cloudflare DNS | Activo; registros públicos verificados |
-| Dominio conectado a GitHub | DNS listo; falta guardar el dominio en Settings → Pages |
-| HTTPS del dominio | Pendiente de validación y emisión del certificado por GitHub |
+| Dominio conectado a GitHub | Configurado y respondiendo HTTP 200 |
+| HTTPS del dominio | Certificado válido; Enforce HTTPS sigue desactivado, su modificación requiere un acceso con permisos de Pages |
 | Google AdSense | Rechazado por contenido de poco valor; puede volver a solicitarse después de indexar las mejoras |
 | Adsterra | Dos banners configurados; pendiente de revisión visual en producción |
 
@@ -104,3 +104,13 @@ Registros previstos en la zona:
 - No se comparten contraseñas, claves fiscales, tarjetas ni códigos de autenticación.
 - Los tokens o secretos futuros se guardarán como secretos de GitHub, nunca dentro del código.
 - Cualquier cambio de proveedor DNS o hosting debe actualizarse primero en este documento.
+
+## Descubrimiento y distribución de contenido
+
+El build genera la tabla completa en HTML y una instantánea JSON para hidratar React con el mismo contenido. No solicita de nuevo el JSON al abrir una página prerenderizada. Los anuncios de la aplicación se activan al montar el navegador, conservando la configuración del workflow.
+
+Las fichas en `/clubes/`, el directorio y `/novedades.html` son HTML estático con banners, metadatos sociales, imágenes PNG y enlace canónico propio. Se incluyen en el sitemap. `/feed.xml` contiene resultados con IDs estables de partidos.
+
+El despliegue conserva el archivo de verificación IndexNow y compara las huellas del contenido deportivo anterior con el nuevo. Después de publicar comprueba la versión disponible en el dominio y envía sólo cambios a los buscadores participantes. La actualización de la fecha de verificación por sí sola no dispara notificaciones. Se registra la respuesta HTTP sin equipararla con indexación o visitas.
+
+Los artefactos `difusion` y `indexnow-receipt` documentan borradores y envíos. No se incorporan APIs de IA ni publicaciones automáticas en redes sociales. Ver [DIFUSION.md](DIFUSION.md) para accesos y medición pendientes.

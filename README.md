@@ -4,6 +4,14 @@ Una tabla alternativa del fútbol argentino construida exclusivamente con result
 
 Además de la tabla, el sitio calcula forma reciente, rachas, líderes estadísticos y evolución de posiciones. Cada club tiene una ficha compartible y puede compararse con cualquier otro participante de la misma temporada.
 
+## Explorá el sitio
+
+[Ver la tabla](https://futbolrealista.com.ar/?utm_source=github&utm_medium=referral&utm_campaign=lanzamiento-fichas) · [Fichas de clubes](https://futbolrealista.com.ar/clubes/) · [Novedades](https://futbolrealista.com.ar/novedades.html) · [RSS](https://futbolrealista.com.ar/feed.xml)
+
+[![Fútbol argentino. Pero bien hecho.](https://futbolrealista.com.ar/social/liga.png)](https://futbolrealista.com.ar/?utm_source=github&utm_medium=referral&utm_campaign=lanzamiento-fichas)
+
+La tabla y las fichas se pueden consultar sin JavaScript. Los enlaces incluyen vistas previas para redes sociales y las novedades se actualizan con los resultados. Los banners se mantienen en la aplicación, las fichas y las páginas de contenido.
+
 ## Desarrollo
 
 ```bash
@@ -42,3 +50,7 @@ Dominio principal: [futbolrealista.com.ar](https://futbolrealista.com.ar/)
 La distribución del dominio, DNS, hosting, datos y publicidad está documentada en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 
 Para retomar el trabajo rápidamente, consultar [STATUS.md](STATUS.md).
+
+## Descubrimiento y difusión
+
+Cada build genera las páginas por club, imágenes sociales, sitemap, RSS y borradores de publicaciones. El despliegue notifica mediante IndexNow sólo las páginas cuyo contenido cambió. No se usan llamadas a IA en la automatización. Ver accesos disponibles, límites de medición y operación en [docs/DIFUSION.md](docs/DIFUSION.md).

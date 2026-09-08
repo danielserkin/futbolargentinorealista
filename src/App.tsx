@@ -4,11 +4,8 @@ import { calculateSeasonStandings, inDateRange } from './standings'
 import { biggestWin, currentStreak, latestCompleted, leaderBy, nextScheduled, positionHistory, recentForm, teamMatches } from './insights'
 import { canShowAds } from './monetization'
 import type { FootballData, Match, SeasonDefinition, StandingRow, Team } from './types'
-
-const seasons: SeasonDefinition[] = [
-  { id: '2025-26', label: '2025/26', start: '2025-07-01', end: '2026-06-30', state: 'finalizada' },
-  { id: '2026-27', label: '2026/27', start: '2026-07-01', end: '2027-06-30', state: 'en-curso' },
-]
+import { clubPath, defaultSeasonId, seasons } from './discovery'
+import { ShareLinks } from './ShareLinks'
 
 const roundNames: Record<string, string> = {
   final: 'Final',
@@ -69,7 +66,12 @@ function StandingsTable({ rows, onTeamSelect }: { rows: StandingRow[]; onTeamSel
           {rows.map((row) => (
             <tr key={row.id} className={positionClass(row.position)}>
               <td><span className="position"><i />{row.position}</span></td>
-              <td><button className="team-cell team-link" onClick={() => onTeamSelect?.(row.id)}><TeamBadge team={row} /><span>{row.name}</span>{row.position === 1 && <Trophy size={15} />}</button></td>
+              <td><a className="team-cell team-link" href={clubPath(row)} onClick={(event) => {
+                if (onTeamSelect && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                  event.preventDefault()
+                  onTeamSelect(row.id)
+                }
+              }}><TeamBadge team={row} /><span>{row.name}</span>{row.position === 1 && <Trophy size={15} />}</a></td>
               <td>{row.played}</td><td>{row.won}</td><td>{row.drawn}</td><td>{row.lost}</td>
               <td>{row.goalsFor}</td><td>{row.goalsAgainst}</td><td>{row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}</td><td className="points">{row.points}</td>
             </tr>
@@ -189,6 +191,7 @@ function ClubExplorer({ matches, rows, selectedId, onSelect }: { matches: Match[
         <div className="club-points"><strong>{first.points}</strong><span>PUNTOS</span></div>
         <button className="share-button" onClick={share}><Share2 size={15} />{shared ? 'Enlace copiado' : 'Compartir'}</button>
       </div>
+      <a className="club-profile-link" href={clubPath(first)}>Ver ficha pública de {first.name}</a>
       <div className="club-stat-grid">
         <div><span>Partidos</span><strong>{first.played}</strong></div><div><span>Ganados</span><strong>{first.won}</strong></div><div><span>Empatados</span><strong>{first.drawn}</strong></div><div><span>Perdidos</span><strong>{first.lost}</strong></div><div><span>Diferencia</span><strong>{first.goalDifference > 0 ? `+${first.goalDifference}` : first.goalDifference}</strong></div><div><span>Racha</span><strong>{currentStreak(matches, first.id)}</strong></div>
       </div>
@@ -392,11 +395,12 @@ function SupercupView({ data, season }: { data: FootballData; season: SeasonDefi
   )
 }
 
-function App() {
-  const [data, setData] = useState<FootballData | null>(null)
+function App({ initialData = null }: { initialData?: FootballData | null }) {
+  const [data, setData] = useState<FootballData | null>(initialData)
+  const [mounted, setMounted] = useState(false)
   const [error, setError] = useState(false)
   const [view, setView] = useState<View>('liga')
-  const [seasonId, setSeasonId] = useState('2026-27')
+  const [seasonId, setSeasonId] = useState(defaultSeasonId)
   const [selectedClubId, setSelectedClubId] = useState<string | null>(null)
   const season = seasons.find((item) => item.id === seasonId)!
   const standingCount = useMemo(() => {
@@ -405,7 +409,7 @@ function App() {
     return calculateSeasonStandings(matches).standings.length
   }, [data, season])
   const showAd = canShowAds({
-    enabled: adsEnabled,
+    enabled: adsEnabled && mounted,
     configured: adsConfigured,
     view,
     hasData: Boolean(data),
@@ -414,19 +418,21 @@ function App() {
   })
 
   useEffect(() => {
+    setMounted(true)
+    if (initialData) return
     fetch(`${import.meta.env.BASE_URL}data/football.json`).then((response) => {
       if (!response.ok) throw new Error('Data unavailable')
       return response.json()
     }).then(setData).catch(() => setError(true))
-  }, [])
+  }, [initialData])
 
   useEffect(() => {
     const readRoute = () => {
       const params = new URLSearchParams(window.location.search)
       const requestedView = params.get('vista')
-      if (requestedView === 'liga' || requestedView === 'clubes' || requestedView === 'copa' || requestedView === 'supercopa') setView(requestedView)
+      setView(requestedView === 'clubes' || requestedView === 'copa' || requestedView === 'supercopa' ? requestedView : 'liga')
       const requestedSeason = params.get('temporada')
-      if (seasons.some((item) => item.id === requestedSeason)) setSeasonId(requestedSeason!)
+      setSeasonId(seasons.some((item) => item.id === requestedSeason) ? requestedSeason! : defaultSeasonId)
       setSelectedClubId(params.get('club'))
     }
     readRoute()
@@ -498,6 +504,7 @@ function App() {
             {data && view === 'supercopa' && <SupercupView data={data} season={season} />}
           </div>
         </section>
+        <ShareLinks path={`/?${new URLSearchParams({ temporada: seasonId, ...(view === 'liga' ? {} : { vista: view }), ...(view === 'clubes' && selectedClubId ? { club: selectedClubId } : {}) })}`} text={`¿Cómo quedaría el fútbol argentino en una liga larga? Mirá la temporada ${season.label}: resultados reales, sin sumar playoffs.`} />
         <EditorialOverview />
       </main>
       <footer>
@@ -505,7 +512,7 @@ function App() {
         <p>Sitio independiente. No afiliado a AFA ni a sus competencias. Datos deportivos de acceso público.</p>
         <div className="footer-end">
           <b>Hecho en Argentina 🇦🇷</b>
-          <div className="footer-links"><a href="/herramientas.html">Estadísticas</a><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
+          <div className="footer-links"><a href="/clubes/">Fichas de clubes</a><a href="/novedades.html">Novedades</a><a href="/feed.xml">RSS</a><a href="/herramientas.html">Estadísticas</a><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
         </div>
       </footer>
     </div>

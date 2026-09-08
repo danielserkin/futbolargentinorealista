@@ -14,8 +14,8 @@
 - Fichas compartibles de clubes, rachas, evolución de posiciones y comparador cara a cara.
 - Guía editorial de estadísticas incorporada al sitemap.
 - Integración intercambiable para AdSense o banners de Adsterra, desactivada por defecto.
-- Pruebas: 23 aprobadas.
-- GitHub Pages publicado en la URL temporal.
+- Pruebas: 34 aprobadas; build con validación de HTML, fichas, sitemap, RSS e imágenes sociales.
+- GitHub Pages publicado en el dominio propio con HTTPS válido.
 - Último workflow verificado: exitoso.
 
 ## URLs
@@ -39,17 +39,21 @@
   - `NS`: `drake.ns.cloudflare.com` y `uma.ns.cloudflare.com`.
   - Dominio raíz: las cuatro IP oficiales de GitHub Pages.
   - `www`: `CNAME` hacia `danielserkin.github.io`.
-- GitHub Pages todavía responde `404` para el dominio y el certificado HTTPS aún no incluye `futbolrealista.com.ar`.
-- Falta guardar el dominio personalizado en la configuración de Pages del repositorio.
+- El dominio responde HTTP 200 mediante HTTPS válido.
+- El dominio personalizado ya está guardado en Pages. `https_enforced` continúa en `false`; la integración actual denegó su modificación (HTTP 403).
 
-## Próximo paso exacto
+## Descubrimiento y difusión (v0.2.0)
 
-1. Abrir `Settings → Pages` en el repositorio de GitHub.
-2. En **Custom domain**, ingresar `futbolrealista.com.ar` y pulsar **Save**.
-3. Esperar a que finalice el DNS check y GitHub emita el certificado.
-4. Activar **Enforce HTTPS** cuando la opción quede disponible.
-5. Confirmar que el dominio raíz y `www` abren la web y que `www` redirige al dominio raíz.
-6. Actualizar este archivo y `docs/ARQUITECTURA.md` con el estado definitivo.
+- La tabla completa se genera en HTML con datos para hidratar la aplicación sin una segunda descarga inicial.
+- 32 fichas públicas de clubes con estadísticas de ambas temporadas, participación parcial identificada y enlaces al comparador.
+- Directorio de clubes, Novedades, feed RSS y 33 imágenes PNG para compartir.
+- Sitemap generado con 42 páginas; botones de WhatsApp/X y enlaces con UTM.
+- Banners existentes conservados; mismas unidades Adsterra en las fichas, directorio y Novedades.
+- IndexNow integrado al despliegue: verificación del dominio y notificación de cambios reales, sin llamadas a IA. Se conserva un comprobante HTTP en los artefactos del workflow.
+- Borradores de difusión generados en `.growth/posts.json`, conservados como artefacto `difusion` durante siete días. No son mensajes enviados.
+- La prueba de navegador verifica tabla sin JavaScript, navegación, historial, selección de temporada, enlaces y diseño móvil.
+- Falta acceso autenticado de marca para publicar en redes y acceso a las métricas de Cloudflare/Adsterra para atribuir visitas e ingresos. No hay visitas nuevas verificadas ni una cifra de tokens facturados disponible.
+- Operación y limitaciones: [docs/DIFUSION.md](docs/DIFUSION.md).
 
 ## Publicidad pendiente
 

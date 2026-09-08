@@ -42,7 +42,16 @@ jobs:
         if: github.event_name != 'schedule' || github.event.schedule == '17 4 * * *'
         run: npm run fetch-data -- --mode=full
       - run: npm test
+      - name: Preparar verificación del dominio y cambios para buscadores
+        run: node scripts/search-indexing.mjs prepare
       - run: npm run build
+      - name: Guardar borradores de difusión y cambios de contenido
+        uses: actions/upload-artifact@v4
+        with:
+          name: difusion
+          path: .growth/
+          include-hidden-files: true
+          retention-days: 7
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
@@ -57,3 +66,23 @@ jobs:
       - name: Publicar en GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: difusion
+          path: .growth/
+      - name: Notificar sólo páginas nuevas o modificadas a IndexNow
+        continue-on-error: true
+        run: node scripts/search-indexing.mjs notify
+      - name: Guardar comprobante del envío a buscadores
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexnow-receipt
+          path: .growth/indexnow-receipt.json
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 7

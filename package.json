@@ -1,24 +1,25 @@
 {
   "name": "futbol-argentino-realista",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --config vite.config.ts",
     "fetch-data": "node scripts/fetch-data.mjs",
-    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir .prerender --emptyOutDir && node scripts/prerender.mjs && node scripts/check-dist.mjs",
+    "build": "tsc -b && vite build --config vite.config.ts && vite build --config vite.config.ts --ssr src/entry-server.tsx --outDir .prerender --emptyOutDir && node scripts/prerender.mjs && node scripts/check-dist.mjs",
     "test": "vitest run",
-    "preview": "vite preview"
+    "preview": "vite preview --config vite.config.ts"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "typescript": "latest",
+    "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "lucide-react": "latest"
+    "typescript": "latest",
+    "vite": "latest"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "2.6.2",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "vitest": "latest"
