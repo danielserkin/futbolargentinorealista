@@ -246,7 +246,7 @@ function AdsterraUnit() {
 
   const width = mobile ? 320 : 728
   const height = mobile ? 50 : 90
-  return <iframe className="adsterra-frame" title="Publicidad" width={width} height={height} src={`${import.meta.env.BASE_URL}adsterra-frame.html`} sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerPolicy="strict-origin-when-cross-origin" />
+  return <iframe className="adsterra-frame" title="Publicidad" width={width} height={height} src={`${import.meta.env.BASE_URL}adsterra-frame.html`} sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerPolicy="strict-origin-when-cross-origin" />
 }
 
 function AdBanner() {
