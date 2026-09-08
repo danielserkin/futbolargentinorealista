@@ -20,12 +20,14 @@ jobs:
       VITE_ADSENSE_CLIENT: ca-pub-4747589340489317
       VITE_ADSENSE_SLOT: ${{ vars.ADSENSE_SLOT }}
       VITE_ADSENSE_ENABLED: ${{ vars.ADSENSE_ENABLED }}
-      VITE_AD_PROVIDER: ${{ vars.AD_PROVIDER }}
-      VITE_ADS_ENABLED: ${{ vars.ADS_ENABLED }}
-      VITE_ADSTERRA_DESKTOP_KEY: ${{ vars.ADSTERRA_DESKTOP_KEY }}
-      VITE_ADSTERRA_DESKTOP_SCRIPT: ${{ vars.ADSTERRA_DESKTOP_SCRIPT }}
-      VITE_ADSTERRA_MOBILE_KEY: ${{ vars.ADSTERRA_MOBILE_KEY }}
-      VITE_ADSTERRA_MOBILE_SCRIPT: ${{ vars.ADSTERRA_MOBILE_SCRIPT }}
+      # Las claves de unidad son identificadores públicos incluidos en el código
+      # que recibe el navegador; no son credenciales de la cuenta de publisher.
+      VITE_AD_PROVIDER: adsterra
+      VITE_ADS_ENABLED: true
+      VITE_ADSTERRA_DESKTOP_KEY: a7a339e0dd5f5bab6b60562ae8566a9a
+      VITE_ADSTERRA_DESKTOP_SCRIPT: https://www.highrevenueformat.com/a7a339e0dd5f5bab6b60562ae8566a9a/invoke.js
+      VITE_ADSTERRA_MOBILE_KEY: d1385a1841db6074b34f310da3b70a9d
+      VITE_ADSTERRA_MOBILE_SCRIPT: https://www.highrevenueformat.com/d1385a1841db6074b34f310da3b70a9d/invoke.js
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

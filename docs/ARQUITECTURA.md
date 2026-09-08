@@ -90,7 +90,7 @@ Registros previstos en la zona:
 | Dominio conectado a GitHub | DNS listo; falta guardar el dominio en Settings → Pages |
 | HTTPS del dominio | Pendiente de validación y emisión del certificado por GitHub |
 | Google AdSense | Rechazado por contenido de poco valor; puede volver a solicitarse después de indexar las mejoras |
-| Adsterra | Integración preparada; faltan cuenta, unidades y revisión visual antes de activarla |
+| Adsterra | Dos banners configurados; pendiente de revisión visual en producción |
 
 ## Direcciones previstas
 

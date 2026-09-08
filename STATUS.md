@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Última actualización: **7 de septiembre de 2026 (UTC)**.
+Última actualización: **8 de septiembre de 2026 (UTC)**.
 
 ## Funcionando
 
@@ -61,13 +61,12 @@
 - El workflow toma el identificador del bloque desde la variable de GitHub `ADSENSE_SLOT`.
 - Acerca del sitio, Contacto y Privacidad/cookies están publicados y enlazados desde el pie.
 - La política incluye un acceso para volver a abrir las preferencias de la CMP de Google.
-- Como alternativa, el sitio admite dos unidades de banner de Adsterra (escritorio y móvil) aisladas dentro de iframes.
+- Se recibieron y configuraron dos unidades de banner de Adsterra (escritorio y móvil) aisladas dentro de iframes.
 - Próximos pasos:
   1. Publicar las nuevas herramientas y comprobarlas en producción.
-  2. Abrir una cuenta de publisher y solicitar únicamente banners clásicos de Adsterra.
-  3. Cargar `AD_PROVIDER=adsterra`, las claves/URLs de las dos unidades y `ADS_ENABLED=true` en GitHub Actions Variables.
-  4. Revisar en producción la calidad de las creatividades antes de mantenerlas activas.
-  5. Esperar a que Google indexe el nuevo contenido antes de solicitar otra revisión de AdSense.
+  2. Revisar en producción la calidad de las creatividades y las métricas de carga.
+  3. Desactivar inmediatamente las unidades si aparecen redirecciones, contenido engañoso o categorías inadecuadas.
+  4. Esperar a que Google indexe el nuevo contenido antes de solicitar otra revisión de AdSense.
 
 ## Seguridad
 
