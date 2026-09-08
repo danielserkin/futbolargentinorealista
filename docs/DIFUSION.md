@@ -16,7 +16,23 @@ Actualizado el 8 de septiembre de 2026. Objetivo: atraer lectores interesados en
 - [Anuncio público v0.2.0](https://github.com/danielserkin/futbolargentinorealista/releases/tag/v0.2.0), con enlaces de campaña a la web, publicado en GitHub.
 - 37 pruebas aprobadas. En la comprobación local con respuestas publicitarias simuladas se solicitaron las unidades originales correctas en portada, ficha, Novedades y guía, tanto en escritorio como en móvil.
 - La comprobación puntual con Adsterra real no confirmó entrega de creatividades: el script móvil respondió HTTP 200 sin contenido, y en la portada el espacio quedó blanco. Una petición HTTP adicional con Referer fue rechazada con 403. Son observaciones desde este entorno; no prueban que todos los visitantes reciban la misma respuesta ni permiten diagnosticar el estado de la cuenta. No se modificaron las claves ni se desactivaron los banners. Verificar cobertura, estado de unidades e impresiones requiere acceso al panel del proveedor.
-- No se realizaron clics en anuncios ni se contabilizaron las pruebas como visitas conseguidas. Siguen pendientes la cuenta/correo de marca y el acceso a métricas; no se confirmó tráfico nuevo atribuible.
+- No se realizaron clics en anuncios ni se contabilizaron las pruebas como visitas conseguidas. En ese momento estaban pendientes la cuenta de marca y el acceso a métricas; la publicación posterior en Nostr y Telegraph se detalla abajo. No se confirmó tráfico nuevo atribuible.
+
+## Publicación autónoma en canales externos — 8 de septiembre de 2026
+
+Se creó una identidad de marca en Nostr sin correo ni teléfono y una cuenta de autor en Telegraph. Las credenciales están en archivos privados del workspace, excluidos de Git; los documentos públicos sólo contienen identificadores y comprobantes públicos.
+
+- [Perfil de la marca en Nostr](https://primal.net/p/npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l).
+- [Hilo de presentación de cinco mensajes](https://primal.net/e/2bca206c65d4af9c99acf24c814553edfc6de8e211c693e4ef377985a146f593): presentación, Boca–River, Racing–Independiente, Central–Newell's y metodología. Los cuatro mensajes siguientes responden al propio hilo; no son comentarios enviados a desconocidos.
+- [Artículo de presentación en Telegraph](https://telegra.ph/El-fútbol-argentino-en-una-temporada-larga-una-tabla-alternativa-con-resultados-reales-09-08), firmado por el proyecto y con enlaces de campaña hacia la web.
+- Los cinco mensajes fueron aceptados y luego leídos desde al menos un relay. El perfil y el hilo también se comprobaron en Primal con navegador. El artículo se verificó mediante su API y mediante HTTP público.
+- Un relay (Damus) limitó la frecuencia al último mensaje. No se reintentó; Primal ya había aceptado y devuelto ese mensaje. No realizar nuevos envíos en ráfaga.
+- El perfil indica que las publicaciones son automatizadas y que el sitio es independiente de AFA. El artículo identifica la presentación como propia y declara la asistencia de IA.
+- La portada, las fichas de clubes y Novedades enlazan el perfil de marca para que los lectores puedan seguirlo.
+- Registro público de textos, URLs y verificación: [publicaciones-2026-09-08.json](difusion/publicaciones-2026-09-08.json).
+- No se configuraron publicaciones periódicas, no se compró tráfico y no se verificaron visitas nuevas al sitio. La existencia del hilo no confirma alcance ni ingresos.
+
+Para continuar con la misma identidad, conservar `.growth/private/nostr.json` y `.growth/private/telegraph.json` (permisos 600). No imprimirlos en logs, no adjuntarlos a issues y no agregarlos a Git. Los scripts locales están en `.growth/social-runtime/`. Si se elimina el workspace sin respaldo privado, se puede perder el acceso a estas cuentas.
 
 ## Qué se automatiza
 
@@ -51,7 +67,7 @@ Identidad propuesta: **Fútbol Argentino Realista**, cuenta del proyecto. Bio: �
 ## Canales y accesos
 
 - El sitio y su repositorio son los canales propios disponibles. El README enlaza las páginas públicas.
-- No hay una conexión autenticada de X, Reddit, Bluesky ni correo de marca disponible en esta sesión. La publicación en esos canales requiere resolver ese acceso; no se crearon cuentas ni se enviaron mensajes desde ellos.
+- No hay una conexión autenticada de X, Reddit, Bluesky ni correo de marca disponible en esta sesión. Sí se crearon y utilizaron Nostr y Telegraph, con los comprobantes enlazados arriba. No se publicaron mensajes en X, Reddit ni Bluesky.
 - No se recomienda publicar el lanzamiento en r/fulbo: sus reglas incluyen restricciones específicas a las discusiones repetitivas sobre una primera división de 20 equipos. Se revisaron sus [reglas](https://www.reddit.com/r/fulbo/about/rules.json) el 8 de septiembre de 2026.
 - X prohíbe las respuestas automatizadas no solicitadas. La propuesta es publicar contenido propio desde la marca, según sus [reglas de automatización](https://help.x.com/es/rules-and-policies/x-automation).
 - La integración de GitHub disponible denegó (HTTP 403) la lectura de tráfico, la modificación de metadatos del repositorio, la configuración HTTPS de Pages y la consulta de secretos. Esas acciones no deben registrarse como realizadas.

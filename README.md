@@ -54,3 +54,5 @@ Para retomar el trabajo rápidamente, consultar [STATUS.md](STATUS.md).
 ## Descubrimiento y difusión
 
 Cada build genera las páginas por club, imágenes sociales, sitemap, RSS y borradores de publicaciones. El despliegue notifica mediante IndexNow sólo las páginas cuyo contenido cambió. No se usan llamadas a IA en la automatización. Ver accesos disponibles, límites de medición y operación en [docs/DIFUSION.md](docs/DIFUSION.md).
+
+La marca también está en [Nostr](https://primal.net/p/npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l). Leé la [presentación del proyecto](https://telegra.ph/El-fútbol-argentino-en-una-temporada-larga-una-tabla-alternativa-con-resultados-reales-09-08) y seguí sus publicaciones.

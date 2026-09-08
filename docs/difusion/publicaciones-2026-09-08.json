@@ -1,0 +1,72 @@
+{
+  "publishedAt": "2026-09-08T02:41:34.306Z",
+  "brand": "Fútbol Argentino Realista",
+  "sourceSnapshotAt": "2026-09-08T02:29:16.396Z",
+  "nostr": {
+    "npub": "npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l",
+    "pubkey": "d972ab558a4ae19b4f0eb4af25bac5a8e07328a54a8bbe11c045bee2b5a9db5c",
+    "profile": "https://primal.net/p/npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l",
+    "posts": [
+      {
+        "id": "2bca206c65d4af9c99acf24c814553edfc6de8e211c693e4ef377985a146f593",
+        "url": "https://primal.net/e/2bca206c65d4af9c99acf24c814553edfc6de8e211c693e4ef377985a146f593",
+        "text": "¿Cómo quedaría el fútbol argentino en una temporada larga? Somos Fútbol Argentino Realista: reunimos resultados verdaderos, sin sumar playoffs, en una tabla alternativa.\n\nPodés ver la posición de tu club, sus rachas y compararlo con otro equipo. Proyecto independiente; no es la clasificación oficial de AFA.\n\nhttps://futbolrealista.com.ar/?utm_source=nostr&utm_medium=social&utm_campaign=presentacion-septiembre\n\n#futbol #argentina #estadisticas",
+        "verifiedOn": [
+          "wss://relay.primal.net"
+        ]
+      },
+      {
+        "id": "e9ccfa2dcea8257767ae0c7d327b4938f55f3a6e502771f213db39ddb96a5f4f",
+        "url": "https://primal.net/e/e9ccfa2dcea8257767ae0c7d327b4938f55f3a6e502771f213db39ddb96a5f4f",
+        "text": "Boca Juniors y River Plate, bajo las mismas reglas de nuestra tabla alternativa 2026/27.\n\nBoca Juniors: 11 puntos en 8 partidos, puesto 15. River Plate: 10 puntos en 8 partidos, puesto 18.\n\nDatos verificados el 7 de septiembre de 2026. Los calendarios pueden ser distintos: por eso mostramos también los partidos jugados. No se suman los playoffs.\n\nhttps://futbolrealista.com.ar/?vista=clubes&club=5&temporada=2026-27&utm_source=nostr&utm_medium=social&utm_campaign=presentacion-septiembre",
+        "verifiedOn": [
+          "wss://relay.damus.io",
+          "wss://relay.primal.net"
+        ]
+      },
+      {
+        "id": "dfe93d30d1a613b70f793fe7508040283fa07cbe9b5363cd2ac82b3ac06b9f43",
+        "url": "https://primal.net/e/dfe93d30d1a613b70f793fe7508040283fa07cbe9b5363cd2ac82b3ac06b9f43",
+        "text": "Racing Club y Independiente, bajo las mismas reglas de nuestra tabla alternativa 2026/27.\n\nRacing Club: 5 puntos en 8 partidos, puesto 30. Independiente: 13 puntos en 8 partidos, puesto 9.\n\nDatos verificados el 7 de septiembre de 2026. Los calendarios pueden ser distintos: por eso mostramos también los partidos jugados. No se suman los playoffs.\n\nhttps://futbolrealista.com.ar/?vista=clubes&club=15&temporada=2026-27&utm_source=nostr&utm_medium=social&utm_campaign=presentacion-septiembre",
+        "verifiedOn": [
+          "wss://relay.damus.io",
+          "wss://relay.primal.net"
+        ]
+      },
+      {
+        "id": "669301e13c73db757e87eb89f6522e1234a81a4d82cb5cfb583a4d2daac95cf3",
+        "url": "https://primal.net/e/669301e13c73db757e87eb89f6522e1234a81a4d82cb5cfb583a4d2daac95cf3",
+        "text": "Rosario Central y Newell's Old Boys, bajo las mismas reglas de nuestra tabla alternativa 2026/27.\n\nRosario Central: 12 puntos en 8 partidos, puesto 13. Newell's Old Boys: 12 puntos en 8 partidos, puesto 11.\n\nDatos verificados el 7 de septiembre de 2026. Los calendarios pueden ser distintos: por eso mostramos también los partidos jugados. No se suman los playoffs.\n\nhttps://futbolrealista.com.ar/?vista=clubes&club=17&temporada=2026-27&utm_source=nostr&utm_medium=social&utm_campaign=presentacion-septiembre",
+        "verifiedOn": [
+          "wss://relay.damus.io",
+          "wss://relay.primal.net"
+        ]
+      },
+      {
+        "id": "2fc6aafa8a8dc07bbc797a5585f9d93f78a14883be6602927826c974cf6f9805",
+        "url": "https://primal.net/e/2fc6aafa8a8dc07bbc797a5585f9d93f78a14883be6602927826c974cf6f9805",
+        "text": "Cómo funciona la propuesta: temporadas de julio a junio, victoria 3 puntos y empate 1. Los playoffs no suman. La participación parcial queda identificada fuera de la tabla principal.\n\nNo inventamos resultados ni partidos entre equipos que no se enfrentaron. Las zonas y el calendario originales siguen siendo una limitación del análisis.\n\nLas fichas tienen resultados, rachas y las temporadas disponibles. Explorá tu club: https://futbolrealista.com.ar/clubes/?utm_source=nostr&utm_medium=social&utm_campaign=presentacion-septiembre\n\nMetodología: https://futbolrealista.com.ar/metodologia.html",
+        "verifiedOn": [
+          "wss://relay.primal.net"
+        ]
+      }
+    ]
+  },
+  "telegraph": {
+    "url": "https://telegra.ph/El-fútbol-argentino-en-una-temporada-larga-una-tabla-alternativa-con-resultados-reales-09-08",
+    "path": "El-fútbol-argentino-en-una-temporada-larga-una-tabla-alternativa-con-resultados-reales-09-08",
+    "title": "El fútbol argentino en una temporada larga: una tabla alternativa con resultados reales",
+    "publishedAt": "2026-09-08T02:41:34.306Z",
+    "initialViews": 0,
+    "author": "Fútbol Argentino Realista",
+    "verified": true,
+    "checkedAt": "2026-09-08T02:41:34.402Z"
+  },
+  "visitsToWebsite": "not_verified",
+  "operatingNotes": [
+    "Cinco mensajes publicados como un solo hilo de presentación; no se enviaron respuestas a desconocidos.",
+    "Damus aplicó un límite de frecuencia al último mensaje. No se reintentó; ese mensaje ya había sido aceptado y leído en Primal.",
+    "Claves y tokens guardados localmente bajo .growth/private/, permisos 600, excluidos de Git.",
+    "No se configuró una tarea de publicación periódica. No se compraron servicios ni tráfico."
+  ]
+}

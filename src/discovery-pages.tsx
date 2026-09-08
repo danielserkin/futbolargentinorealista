@@ -7,7 +7,7 @@ const dateLabel = (date: string) => new Intl.DateTimeFormat('es-AR', { dateStyle
 
 function Layout({ children }: { children: ReactNode }) {
   return <><div className="topline" /><header><a className="brand" href="/">FÚTBOL ARGENTINO <b>REALISTA</b></a><nav className="site-nav"><a href="/">Tabla</a><a href="/clubes/">Clubes</a><a href="/novedades.html">Novedades</a></nav></header>
-    <main>{children}</main><footer><span>Fútbol Argentino Realista · Proyecto independiente</span><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/feed.xml">RSS</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></footer></>
+    <main>{children}</main><footer><span>Fútbol Argentino Realista · Proyecto independiente</span><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/feed.xml">RSS</a><a href="https://primal.net/p/npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l" rel="me">Seguinos en Nostr</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></footer></>
 }
 
 function Sharing({ path, text }: { path: string; text: string }) {

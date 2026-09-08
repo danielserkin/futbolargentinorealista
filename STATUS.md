@@ -52,9 +52,10 @@
 - IndexNow integrado al despliegue: verificación del dominio y notificación de cambios reales, sin llamadas a IA. Se conserva un comprobante HTTP en los artefactos del workflow.
 - Borradores de difusión generados en `.growth/posts.json`, conservados como artefacto `difusion` durante siete días. No son mensajes enviados.
 - La prueba de navegador verifica tabla sin JavaScript, navegación, historial, selección de temporada, enlaces y diseño móvil.
-- Falta acceso autenticado de marca para publicar en redes y acceso a las métricas de Cloudflare/Adsterra para atribuir visitas e ingresos. No hay visitas nuevas verificadas ni una cifra de tokens facturados disponible.
+- La marca ya publica en Nostr y Telegraph. Falta acceso a las métricas de Cloudflare/Adsterra para atribuir visitas e ingresos. No hay visitas nuevas verificadas ni una cifra de tokens facturados disponible.
 - Anuncio público de lanzamiento: [v0.2.0](https://github.com/danielserkin/futbolargentinorealista/releases/tag/v0.2.0). IndexNow confirmó recepción HTTP 200 de 35 URLs; indexación y visitas sin confirmar.
 - Los banners siguen activos, pero la comprobación real desde este entorno no recibió creatividades de Adsterra; falta revisar el panel del proveedor.
+- Difusión externa publicada: identidad de marca en Nostr, hilo de cinco mensajes verificado y artículo en Telegraph. URLs y comprobantes en `docs/difusion/publicaciones-2026-09-08.json`. Las credenciales locales permanecen excluidas de Git. No hay visitas atribuibles verificadas.
 - Operación y limitaciones: [docs/DIFUSION.md](docs/DIFUSION.md).
 
 ## Publicidad pendiente
