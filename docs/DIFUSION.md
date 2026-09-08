@@ -9,6 +9,15 @@ Actualizado el 8 de septiembre de 2026. Objetivo: atraer lectores interesados en
 - Prueba de navegador en el dominio real aprobada: tabla y fichas sin JavaScript, navegación interactiva, vuelta atrás, temporada en enlaces y diseño móvil. Las solicitudes de analítica y publicidad fueron bloqueadas en esta prueba funcional.
 - La selección de formato del banner dentro del iframe ahora la comunica la página contenedora, evitando que el ancho inicial provisional cargue una unidad móvil en escritorio. Las dos unidades originales se mantienen.
 
+## Cierre de la implementación
+
+- Corrección de formato de banners publicada desde `916874a`: [despliegue exitoso](https://github.com/danielserkin/futbolargentinorealista/actions/runs/34179901013).
+- El último comprobante IndexNow respondió HTTP 200 a las 02:24:16 UTC del 8 de septiembre de 2026 para las mismas 35 URLs. Esto confirma recepción, no indexación ni visitas.
+- [Anuncio público v0.2.0](https://github.com/danielserkin/futbolargentinorealista/releases/tag/v0.2.0), con enlaces de campaña a la web, publicado en GitHub.
+- 37 pruebas aprobadas. En la comprobación local con respuestas publicitarias simuladas se solicitaron las unidades originales correctas en portada, ficha, Novedades y guía, tanto en escritorio como en móvil.
+- La comprobación puntual con Adsterra real no confirmó entrega de creatividades: el script móvil respondió HTTP 200 sin contenido, y en la portada el espacio quedó blanco. Una petición HTTP adicional con Referer fue rechazada con 403. Son observaciones desde este entorno; no prueban que todos los visitantes reciban la misma respuesta ni permiten diagnosticar el estado de la cuenta. No se modificaron las claves ni se desactivaron los banners. Verificar cobertura, estado de unidades e impresiones requiere acceso al panel del proveedor.
+- No se realizaron clics en anuncios ni se contabilizaron las pruebas como visitas conseguidas. Siguen pendientes la cuenta/correo de marca y el acceso a métricas; no se confirmó tráfico nuevo atribuible.
+
 ## Qué se automatiza
 
 - El mismo despliegue que actualiza los partidos genera la tabla completa en HTML, 32 fichas de clubes, el directorio, Novedades, vistas previas PNG y un feed RSS.
