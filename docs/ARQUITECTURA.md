@@ -74,7 +74,7 @@ Registros previstos en la zona:
 - El proveedor se selecciona con `AD_PROVIDER`; todos los anuncios permanecen apagados mientras `ADS_ENABLED` sea falso.
 - AdSense utiliza el Publisher ID y el slot responsivo. Adsterra admite una unidad 728×90 para escritorio y otra 320×50 para móvil.
 - Las unidades de Adsterra se ejecutan en iframes aislados para que su script no modifique la aplicación.
-- Los bloques sólo solicitan anuncios en la Liga, después de cargar correctamente una tabla con contenido suficiente.
+- La aplicación solicita un bloque después de cargar correctamente una tabla con contenido suficiente. Formato, Metodología, Estadísticas y el análisis de temporada incluyen una única unidad responsive; las páginas legales, Contacto y Acerca permanecen sin anuncios.
 - Acerca del sitio, Contacto y Privacidad/cookies son páginas estáticas incluidas en cada despliegue.
 - Los identificadores de anuncio son públicos; las credenciales de las cuentas nunca se guardan en el repositorio.
 

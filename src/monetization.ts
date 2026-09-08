@@ -10,7 +10,6 @@ export interface MonetizationState {
 export function canShowAds(state: MonetizationState) {
   return state.enabled
     && state.configured
-    && state.view === 'liga'
     && state.hasData
     && !state.hasError
     && state.standingCount >= 10

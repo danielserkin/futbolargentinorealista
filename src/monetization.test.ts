@@ -6,13 +6,15 @@ const ready: MonetizationState = {
 }
 
 describe('canShowAds', () => {
-  it('allows only a configured league with substantial loaded content', () => {
+  it('allows every substantial content view', () => {
     expect(canShowAds(ready)).toBe(true)
+    expect(canShowAds({ ...ready, view: 'clubes' })).toBe(true)
+    expect(canShowAds({ ...ready, view: 'copa' })).toBe(true)
+    expect(canShowAds({ ...ready, view: 'supercopa' })).toBe(true)
   })
 
   it.each([
-    { enabled: false }, { configured: false }, { view: 'copa' as const }, { view: 'supercopa' as const },
-    { hasData: false }, { hasError: true }, { standingCount: 9 },
+    { enabled: false }, { configured: false }, { hasData: false }, { hasError: true }, { standingCount: 9 },
   ])('blocks unsafe state %o', (change) => {
     expect(canShowAds({ ...ready, ...change })).toBe(false)
   })

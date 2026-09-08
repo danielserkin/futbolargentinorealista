@@ -35,7 +35,7 @@ Proyecto independiente, no afiliado a AFA ni a sus competencias.
 
 ## Publicidad
 
-La integración admite AdSense o banners de Adsterra mediante variables de entorno. Los anuncios permanecen desactivados por defecto y sólo se muestran en la vista de Liga cuando los datos cargaron correctamente. Para Adsterra se usan unidades aisladas en iframes; se recomienda habilitar únicamente banners clásicos y mantener desactivados Popunder, Social Bar y SmartLink.
+La integración admite AdSense o banners de Adsterra mediante variables de entorno. En la aplicación, los anuncios sólo se muestran cuando los datos cargaron correctamente; las páginas editoriales con contenido sustancial incluyen una única unidad responsive. Para Adsterra se usan exclusivamente banners clásicos y permanecen desactivados Popunder, Social Bar y SmartLink.
 
 Dominio principal: [futbolrealista.com.ar](https://futbolrealista.com.ar/)
 
