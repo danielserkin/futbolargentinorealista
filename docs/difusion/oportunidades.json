@@ -1,0 +1,32 @@
+{
+  "updatedAt": "2026-09-09T20:38:15.592Z",
+  "opportunities": [
+    {
+      "channel": "Nostr",
+      "audienceFit": "Comunidad abierta con hashtags de fútbol y una identidad de marca ya verificada.",
+      "rulesUrl": "https://github.com/nostr-protocol/nips/blob/master/01.md",
+      "access": "existing",
+      "status": "viable",
+      "result": "Una actualización deportiva fue publicada y verificada el 9 de septiembre de 2026.",
+      "nextStep": "Publicar sólo ante un cambio deportivo relevante, como máximo una nota diaria y sin respuestas automáticas a terceros."
+    },
+    {
+      "channel": "Reddit r/fulbo",
+      "audienceFit": "Audiencia argentina muy relevante, pero el tema de ligas de 20 equipos está restringido y repetido.",
+      "rulesUrl": "https://www.reddit.com/r/fulbo/about/rules.json",
+      "access": "none",
+      "status": "blocked_by_rules_and_access",
+      "result": "No se publicó ni se creó una cuenta.",
+      "nextStep": "No promocionar el proyecto allí salvo que cambien explícitamente las reglas o un moderador autorice el contenido."
+    },
+    {
+      "channel": "Mastodon",
+      "audienceFit": "Permite publicación de marca y descubrimiento federado, pero las reglas y el alta dependen de cada servidor.",
+      "rulesUrl": "https://joinmastodon.org/es/servers",
+      "access": "none",
+      "status": "blocked_by_registration",
+      "result": "No se encontró una cuenta autenticada ni un servidor argentino/futbolero con alta utilizable sin coordinación externa.",
+      "nextStep": "Reevaluar sólo si aparece un servidor pertinente y se dispone del correo o verificación exigidos."
+    }
+  ]
+}

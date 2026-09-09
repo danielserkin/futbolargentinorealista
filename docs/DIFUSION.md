@@ -1,6 +1,15 @@
 # Difusión y visitas reales
 
-Actualizado el 8 de septiembre de 2026. Objetivo: atraer lectores interesados en fútbol para aumentar el uso del sitio y las impresiones legítimas de sus banners.
+Actualizado el 9 de septiembre de 2026. Objetivo: atraer lectores interesados en fútbol para aumentar el uso del sitio y las impresiones legítimas de sus banners.
+
+## Actualización deportiva publicada — 9 de septiembre de 2026
+
+- [Nota sobre el salto de Unión del puesto 17 al 8](https://primal.net/e/8981190642494fb818212323f30bfb62f6a88f185dc12e3cc51df7092d180e9e), publicada desde la identidad Nostr existente.
+- El texto enlaza con UTM a la ficha de Unión y se basa en la instantánea verificada a las 20:20:59 UTC: Unión 3–2 Instituto, 13 puntos en 8 partidos; Instituto permanece 4.º con 16.
+- Se envió una sola nota al relay de Primal. El evento fue aceptado, leído de vuelta con firma válida y comprobado en la interfaz pública con el texto y destino correctos.
+- Registro completo: [publicaciones-2026-09-09.json](difusion/publicaciones-2026-09-09.json). Oportunidades y bloqueos vigentes: [oportunidades.json](difusion/oportunidades.json).
+- Visitas atribuibles, impresiones e ingresos: `not_verified`. Las comprobaciones propias no se contabilizan como audiencia.
+- Próxima publicación: únicamente ante otro cambio deportivo sustancial; no más de una nota por día ni tres por semana mientras no existan métricas que justifiquen aumentar la frecuencia.
 
 ## Resultado verificado del primer despliegue
 

@@ -1,0 +1,32 @@
+{
+  "campaign": "union-sube-nueve-septiembre",
+  "publishedAt": "2026-09-09T20:38:14.000Z",
+  "brand": "Fútbol Argentino Realista",
+  "sourceSnapshotAt": "2026-09-09T20:20:59.232Z",
+  "reason": "El 3–2 de Unión sobre Instituto movió a Unión del puesto 17 al 8 en la tabla alternativa.",
+  "channel": "nostr",
+  "account": "npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l",
+  "text": "Unión fue el equipo que más movió nuestra tabla alternativa con el último resultado: el 3–2 ante Instituto lo llevó del puesto 17 al 8. Quedó con 13 puntos en 8 partidos; Instituto sigue 4.º con 16.\n\nResultados reales, sin sumar playoffs. Datos verificados el 9 de septiembre de 2026.\n\nhttps://futbolrealista.com.ar/clubes/union-santa-fe-20.html?utm_source=nostr&utm_medium=social&utm_campaign=union-sube-nueve-septiembre\n\n#futbol #argentina #union #instituto #estadisticas",
+  "destination": "https://futbolrealista.com.ar/clubes/union-santa-fe-20.html?utm_source=nostr&utm_medium=social&utm_campaign=union-sube-nueve-septiembre",
+  "eventId": "8981190642494fb818212323f30bfb62f6a88f185dc12e3cc51df7092d180e9e",
+  "url": "https://primal.net/e/8981190642494fb818212323f30bfb62f6a88f185dc12e3cc51df7092d180e9e",
+  "status": "verified",
+  "evidence": {
+    "relay": "wss://relay.primal.net",
+    "relayReadBack": true,
+    "relayCheckedAt": "2026-09-09T20:38:15.592Z",
+    "publicPageTitle": "Note by Fútbol Argentino Realista",
+    "publicPageContainsText": true,
+    "publicPageContainsDestination": true
+  },
+  "metrics": {
+    "websiteVisits": "not_verified",
+    "adImpressions": "not_verified",
+    "revenue": "not_verified"
+  },
+  "operatingNotes": [
+    "Se publicó una sola nota independiente, no respuestas a terceros ni una ráfaga.",
+    "Las comprobaciones técnicas bloquearon analítica y publicidad y no se cuentan como visitas obtenidas.",
+    "No volver a publicar esta campaña aunque una interfaz pública falle; el evento ya fue leído y verificado."
+  ]
+}
