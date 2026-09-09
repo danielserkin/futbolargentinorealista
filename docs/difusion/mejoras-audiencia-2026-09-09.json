@@ -29,8 +29,21 @@
       "https://futbolrealista.com.ar/clasicos/huracan-san-lorenzo-clasico-porteno.html"
     ],
     "adUnitsPreserved": ["728x90", "320x50"],
-    "deployment": "pending",
-    "indexNowReceipt": "pending"
+    "deployment": {
+      "status": "success",
+      "commit": "6dd91c3f35f4e4592c937bcfdc863711a45a4a5c",
+      "run": "https://github.com/danielserkin/futbolargentinorealista/actions/runs/34403993449",
+      "publicPageVerified": "https://futbolrealista.com.ar/clasicos/boca-river-superclasico.html",
+      "publicSitemapRivalryUrlCount": 6,
+      "responsiveAdLoaderPresent": true
+    },
+    "indexNowReceipt": {
+      "at": "2026-09-09T20:56:38.205Z",
+      "httpStatus": 200,
+      "accepted": true,
+      "submittedUrlCount": 41,
+      "indexed": "not_verified"
+    }
   },
   "outcomes": {
     "indexed": "not_verified",

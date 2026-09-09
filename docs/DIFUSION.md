@@ -8,6 +8,8 @@ Actualizado el 9 de septiembre de 2026. Objetivo: atraer lectores interesados en
 - Una búsqueda pública por dominio y por el nombre exacto de la marca no devolvió páginas del sitio. La observación se hizo un día después del primer envío a IndexNow: recepción del sitemap o de IndexNow no equivale a indexación.
 - Se agregó `/clasicos/` con cinco comparaciones actualizadas: Boca–River, Racing–Independiente, Central–Newell's, Unión–Colón y Huracán–San Lorenzo. Cada página contiene posiciones, puntos, goles, forma, racha, cruces disponibles, advertencia metodológica, imagen social y botones para compartir.
 - Las seis páginas nuevas conservan el banner responsive, canonical, metadatos sociales, enlaces internos y entrada en sitemap. El despliegue notifica sus URLs mediante el flujo existente de IndexNow.
+- Despliegue verificado desde `6dd91c3`: [ejecución exitosa](https://github.com/danielserkin/futbolargentinorealista/actions/runs/34403993449). La página pública de Boca–River respondió con el título esperado y el cargador del banner; el sitemap público contiene las seis URLs.
+- IndexNow respondió HTTP 200 a las 20:56:38 UTC y aceptó el lote de 41 páginas nuevas o modificadas. El lote amplio se debe a que el generador cambió; `indexed` permanece `not_verified`.
 - Objetivo de la tanda: ofrecer piezas específicas que una persona sí tenga motivo para buscar o enviar por WhatsApp. Visitas, indexación e ingresos posteriores: `not_verified`; revisar el panel tras siete días y comparar referentes y páginas de entrada si se habilita acceso a analítica.
 
 ## Actualización deportiva publicada — 9 de septiembre de 2026
