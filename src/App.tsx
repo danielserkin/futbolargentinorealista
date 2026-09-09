@@ -512,7 +512,7 @@ function App({ initialData = null }: { initialData?: FootballData | null }) {
         <p>Sitio independiente. No afiliado a AFA ni a sus competencias. Datos deportivos de acceso público.</p>
         <div className="footer-end">
           <b>Hecho en Argentina 🇦🇷</b>
-          <div className="footer-links"><a href="/clubes/">Fichas de clubes</a><a href="/novedades.html">Novedades</a><a href="/feed.xml">RSS</a><a href="https://primal.net/p/npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l" rel="me">Seguinos en Nostr</a><a href="/herramientas.html">Estadísticas</a><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
+          <div className="footer-links"><a href="/clubes/">Fichas de clubes</a><a href="/clasicos/">Comparar clásicos</a><a href="/novedades.html">Novedades</a><a href="/feed.xml">RSS</a><a href="https://primal.net/p/npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l" rel="me">Seguinos en Nostr</a><a href="/herramientas.html">Estadísticas</a><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/acerca.html">Acerca</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></div>
         </div>
       </footer>
     </div>

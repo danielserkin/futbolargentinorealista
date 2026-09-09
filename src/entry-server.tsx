@@ -2,8 +2,8 @@ import { StrictMode } from 'react'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import App from './App'
 import type { FootballData, Team } from './types'
-import { ClubDirectory, ClubPage, NewsPage } from './discovery-pages'
-export { clubPath, clubSlug, campaignUrl, publishedTeams, seasons, seasonTable, siteUrl, defaultSeasonId } from './discovery'
+import { ClubDirectory, ClubPage, NewsPage, RivalryDirectory, RivalryPage } from './discovery-pages'
+export { clubPath, clubSlug, campaignUrl, publishedTeams, rivalries, rivalryPath, rivalryTeams, seasons, seasonTable, siteUrl, defaultSeasonId } from './discovery'
 
 export function render(data: FootballData) {
   return renderToString(
@@ -16,3 +16,5 @@ export function render(data: FootballData) {
 export const renderClub = (data: FootballData, team: Team) => renderToStaticMarkup(<ClubPage data={data} team={team} />)
 export const renderDirectory = (data: FootballData) => renderToStaticMarkup(<ClubDirectory data={data} />)
 export const renderNews = (data: FootballData) => renderToStaticMarkup(<NewsPage data={data} />)
+export const renderRivalry = (data: FootballData, rivalry: Parameters<typeof RivalryPage>[0]['rivalry']) => renderToStaticMarkup(<RivalryPage data={data} rivalry={rivalry} />)
+export const renderRivalryDirectory = (data: FootballData) => renderToStaticMarkup(<RivalryDirectory data={data} />)

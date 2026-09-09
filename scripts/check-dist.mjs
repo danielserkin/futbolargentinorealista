@@ -30,9 +30,12 @@ if (!adsterraLoader.includes('728') || !adsterraLoader.includes('320')) throw ne
 if (!adsterraFrame.includes('/adsterra-static.js') || !adsterraFrame.includes('noindex')) throw new Error('Adsterra frame is incomplete')
 
 const directory = await readFile(new URL('clubes/index.html', dist), 'utf8')
+const rivalryDirectory = await readFile(new URL('clasicos/index.html', dist), 'utf8')
 const clubPages = (await readdir(new URL('clubes/', dist))).filter((name) => name.endsWith('.html') && name !== 'index.html')
 if (clubPages.length < 20) throw new Error('Expected at least 20 real club profiles')
-const paths = ['index.html', 'clubes/index.html', 'novedades.html', ...clubPages.map((name) => `clubes/${name}`)]
+const rivalryPages = (await readdir(new URL('clasicos/', dist))).filter((name) => name.endsWith('.html') && name !== 'index.html')
+if (rivalryPages.length < 5) throw new Error('Expected five rivalry comparisons')
+const paths = ['index.html', 'clubes/index.html', 'clasicos/index.html', 'novedades.html', ...clubPages.map((name) => `clubes/${name}`), ...rivalryPages.map((name) => `clasicos/${name}`)]
 for (const path of paths) {
   const content = await readFile(new URL(path, dist), 'utf8')
   if (path !== 'index.html' && !content.includes('/adsterra-static.js')) throw new Error(`${path}: responsive advertising is missing`)
@@ -49,6 +52,10 @@ for (const path of paths) {
   if (path.startsWith('clubes/') && path !== 'clubes/index.html') {
     if (!directory.includes(`/${path}`)) throw new Error(`${path}: orphaned club profile`)
     if (!content.includes('Últimos resultados de') || !content.includes('Cómo se calcula esta ficha')) throw new Error(`${path}: club content incomplete`)
+  }
+  if (path.startsWith('clasicos/') && path !== 'clasicos/index.html') {
+    if (!rivalryDirectory.includes(`/${path}`)) throw new Error(`${path}: orphaned rivalry comparison`)
+    if (!content.includes('La foto actual de la temporada') || !content.includes('no una tabla oficial de AFA')) throw new Error(`${path}: rivalry content incomplete`)
   }
 }
 const feed = await readFile(new URL('feed.xml', dist), 'utf8')

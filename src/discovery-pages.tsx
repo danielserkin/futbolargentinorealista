@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
-import { clubPath, defaultSeasonId, publishedTeams, seasons, seasonTable, shareLinks } from './discovery'
+import { clubPath, defaultSeasonId, publishedTeams, rivalries, rivalryPath, rivalryTeams, seasons, seasonTable, shareLinks, type RivalryDefinition } from './discovery'
 import { currentStreak, latestCompleted, recentForm, teamMatches } from './insights'
 import type { FootballData, Match, Team } from './types'
 
 const dateLabel = (date: string) => new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date(date))
 
 function Layout({ children }: { children: ReactNode }) {
-  return <><div className="topline" /><header><a className="brand" href="/">FÚTBOL ARGENTINO <b>REALISTA</b></a><nav className="site-nav"><a href="/">Tabla</a><a href="/clubes/">Clubes</a><a href="/novedades.html">Novedades</a></nav></header>
+  return <><div className="topline" /><header><a className="brand" href="/">FÚTBOL ARGENTINO <b>REALISTA</b></a><nav className="site-nav"><a href="/">Tabla</a><a href="/clubes/">Clubes</a><a href="/clasicos/">Clásicos</a><a href="/novedades.html">Novedades</a></nav></header>
     <main>{children}</main><footer><span>Fútbol Argentino Realista · Proyecto independiente</span><a href="/metodologia.html">Metodología</a><a href="/formato.html">Formato</a><a href="/feed.xml">RSS</a><a href="https://primal.net/p/npub1m9e2k4v2ftsekncwkjhjtwk94rs8x299f29muywqgklw9ddfmdwq2e8q7l" rel="me">Seguinos en Nostr</a><a href="/contacto.html">Contacto</a><a href="/privacidad.html">Privacidad</a></footer></>
 }
 
@@ -15,8 +15,9 @@ function Sharing({ path, text }: { path: string; text: string }) {
   return <nav className="sharing" aria-label="Compartir"><span>Compartí el debate</span><a className="button" href={links.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a><a className="button" href={links.x} target="_blank" rel="noopener noreferrer">X</a></nav>
 }
 
-function Results({ matches }: { matches: Match[] }) {
-  return <ul className="results-list">{matches.map((match) => <li key={match.id}><time dateTime={match.date}>{dateLabel(match.date)}</time><span><a href={clubPath(match.home)}>{match.home.name}</a> <strong>{match.homeScore}–{match.awayScore}</strong> <a href={clubPath(match.away)}>{match.away.name}</a></span></li>)}</ul>
+function Results({ matches, linkableIds }: { matches: Match[]; linkableIds?: Set<string> }) {
+  const teamName = (team: Team) => !linkableIds || linkableIds.has(team.id) ? <a href={clubPath(team)}>{team.name}</a> : <>{team.name}</>
+  return <ul className="results-list">{matches.map((match) => <li key={match.id}><time dateTime={match.date}>{dateLabel(match.date)}</time><span>{teamName(match.home)} <strong>{match.homeScore}–{match.awayScore}</strong> {teamName(match.away)}</span></li>)}</ul>
 }
 
 export function ClubPage({ data, team }: { data: FootballData; team: Team }) {
@@ -60,5 +61,46 @@ export function NewsPage({ data }: { data: FootballData }) {
     <Sharing path="/novedades.html" text={`¿Cómo va la liga sin zonas? Mirá la tabla alternativa ${season.label} y los últimos resultados.`} />
     <article><h2>Últimos partidos regulares</h2><Results matches={recent} /><p>Los playoffs no suman puntos en este proyecto. <a href="/metodologia.html">Ver cómo seleccionamos los partidos</a>.</p></article>
     <p className="note">Podés seguir los resultados con <a href="/feed.xml">nuestro feed RSS</a>: copiá el enlace en tu lector de noticias. No hace falta registrarse.</p>
+  </Layout>
+}
+
+export function RivalryDirectory({ data }: { data: FootballData }) {
+  const available = rivalries.filter((rivalry) => rivalryTeams(data, rivalry))
+  return <Layout><span className="eyebrow">COMPARACIONES QUE SE DISCUTEN</span><h1>Los clásicos, en una liga larga</h1>
+    <p className="lead">Compará a los grandes rivales con la misma regla: resultados de fase regular, tres puntos por victoria y una temporada de julio a junio.</p>
+    <ul className="club-directory">{available.map((rivalry) => <li key={rivalry.slug}><a href={rivalryPath(rivalry)}>{rivalry.name}<span>Comparar números →</span></a></li>)}</ul>
+    <article><h2>Qué responde cada comparación</h2><p>Posición, puntos, partidos, goles, forma reciente e historial de cruces presentes en nuestros datos. La comparación no reemplaza el historial oficial de cada clásico: sirve para ver cómo rendirían hoy ambos equipos dentro de una misma tabla continua.</p></article>
+  </Layout>
+}
+
+export function RivalryPage({ data, rivalry }: { data: FootballData; rivalry: RivalryDefinition }) {
+  const teams = rivalryTeams(data, rivalry)
+  if (!teams) return <Layout><h1>{rivalry.name}</h1><p>No hay datos suficientes para esta comparación.</p></Layout>
+  const [first, second] = teams
+  const season = seasons.find((item) => item.id === defaultSeasonId)!
+  const table = seasonTable(data, season)
+  const rows = teams.map((team) => table.standings.find((row) => row.id === team.id) ?? table.partial.find((row) => row.id === team.id))
+  const direct = [...data.league, ...data.cup].filter((match) => match.completed && match.homeScore !== null && match.awayScore !== null && rivalry.teamIds.every((id) => match.home.id === id || match.away.id === id)).sort((a, b) => b.date.localeCompare(a.date))
+  const record = (teamId: string) => direct.reduce((totals, match) => {
+    const own = match.home.id === teamId ? match.homeScore! : match.awayScore!
+    const rival = match.home.id === teamId ? match.awayScore! : match.homeScore!
+    if (own > rival) totals.won += 1
+    else if (own === rival) totals.drawn += 1
+    return totals
+  }, { won: 0, drawn: 0 })
+  const firstRecord = record(first.id)
+  const secondRecord = record(second.id)
+  const linkableIds = new Set(publishedTeams(data).map((team) => team.id))
+  return <Layout><span className="eyebrow">CARA A CARA · DATOS ACTUALIZADOS</span><h1>{rivalry.name}: comparación {season.label}</h1>
+    <p className="lead">¿Quién está mejor en una temporada larga? Posiciones, puntos, goles, rachas y cruces de {first.name} y {second.name} bajo exactamente las mismas reglas.</p>
+    <p>Datos verificados el <time dateTime={data.metadata.updatedAt}>{dateLabel(data.metadata.updatedAt)}</time>. Esta es una comparación alternativa e independiente, no una tabla oficial de AFA.</p>
+    <Sharing path={rivalryPath(rivalry)} text={`${rivalry.name}: mirá quién está mejor en la tabla larga, con puntos, rachas y resultados.`} />
+    <article><h2>La foto actual de la temporada</h2><div className="comparison-grid">{teams.map((team, index) => {
+      const row = rows[index]
+      const form = recentForm(table.regularMatches, team.id)
+      return <section key={team.id} className="comparison-team"><h3>{linkableIds.has(team.id) ? <a href={clubPath(team)}>{team.name}</a> : team.name}</h3>{row ? <><strong className="comparison-position">{row.position ? `${row.position}.º` : 'Parcial'}</strong><p>{row.points} puntos en {row.played} partidos</p><p>{row.won} G · {row.drawn} E · {row.lost} P</p><p>{row.goalsFor} GF · {row.goalsAgainst} GC · {row.goalDifference > 0 ? '+' : ''}{row.goalDifference} DG</p><p>Forma: <strong>{form.join(' · ') || 'Sin partidos'}</strong></p><p>Racha: {currentStreak(table.regularMatches, team.id)}</p></> : <p>Sin participación en esta temporada.</p>}</section>
+    })}</div><p className="note">La posición compara los resultados de fase regular incluidos entre el 1 de julio de 2026 y el 30 de junio de 2027. Los equipos pueden tener distinta cantidad de partidos.</p></article>
+    <article><h2>Cruces presentes en nuestros datos</h2>{direct.length ? <><p>{first.name}: {firstRecord.won} victorias. {second.name}: {secondRecord.won} victorias. Empates: {firstRecord.drawn}. Se cuentan {direct.length} cruces disponibles de liga y Copa Argentina; no es el historial completo del clásico.</p><Results matches={direct.slice(0, 8)} linkableIds={linkableIds} /></> : <p>No hay cruces directos disponibles en la fuente para las temporadas cubiertas.</p>}</article>
+    <article><h2>Cómo leer la comparación</h2><p>Una ventaja en puntos no necesariamente significa dominio histórico: muestra el rendimiento acumulado en nuestra liga propuesta. Excluimos playoffs de la tabla, pero identificamos por separado los cruces disponibles de Copa Argentina. <a href="/metodologia.html">Leé la metodología completa</a>.</p><a className="button" href="/clasicos/">Comparar otro clásico</a></article>
   </Layout>
 }

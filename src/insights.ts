@@ -39,7 +39,8 @@ export function currentStreak(matches: Match[], teamId: string) {
   const labels: Record<FormResult, [string, string]> = {
     G: ['victoria', 'victorias'], E: ['empate', 'empates'], P: ['derrota', 'derrotas'],
   }
-  return `${count} ${labels[latest][count === 1 ? 0 : 1]} ${count === 1 ? 'seguida' : 'seguidas'}`
+  const consecutive = latest === 'E' ? (count === 1 ? 'seguido' : 'seguidos') : (count === 1 ? 'seguida' : 'seguidas')
+  return `${count} ${labels[latest][count === 1 ? 0 : 1]} ${consecutive}`
 }
 
 export function biggestWin(matches: Match[]) {

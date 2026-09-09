@@ -2,6 +2,14 @@
 
 Actualizado el 9 de septiembre de 2026. Objetivo: atraer lectores interesados en fútbol para aumentar el uso del sitio y las impresiones legítimas de sus banners.
 
+## Diagnóstico de audiencia y nueva sección — 9 de septiembre de 2026
+
+- El panel de Adsterra compartido por el propietario mostró 15 impresiones y 3 clics acumulados entre el 8 y el 9 de septiembre, con ingreso informado de USD 0. Con ese volumen no se puede evaluar rentabilidad; no se generan visitas ni clics de prueba.
+- Una búsqueda pública por dominio y por el nombre exacto de la marca no devolvió páginas del sitio. La observación se hizo un día después del primer envío a IndexNow: recepción del sitemap o de IndexNow no equivale a indexación.
+- Se agregó `/clasicos/` con cinco comparaciones actualizadas: Boca–River, Racing–Independiente, Central–Newell's, Unión–Colón y Huracán–San Lorenzo. Cada página contiene posiciones, puntos, goles, forma, racha, cruces disponibles, advertencia metodológica, imagen social y botones para compartir.
+- Las seis páginas nuevas conservan el banner responsive, canonical, metadatos sociales, enlaces internos y entrada en sitemap. El despliegue notifica sus URLs mediante el flujo existente de IndexNow.
+- Objetivo de la tanda: ofrecer piezas específicas que una persona sí tenga motivo para buscar o enviar por WhatsApp. Visitas, indexación e ingresos posteriores: `not_verified`; revisar el panel tras siete días y comparar referentes y páginas de entrada si se habilita acceso a analítica.
+
 ## Actualización deportiva publicada — 9 de septiembre de 2026
 
 - [Nota sobre el salto de Unión del puesto 17 al 8](https://primal.net/e/8981190642494fb818212323f30bfb62f6a88f185dc12e3cc51df7092d180e9e), publicada desde la identidad Nostr existente.

@@ -10,6 +10,9 @@ describe('search notifications', () => {
   it('does not submit anything for a verification-only refresh', () => {
     expect(changedUrls({ '/': 'stable-content-hash' }, { '/': 'stable-content-hash' })).toEqual([])
   })
+  it('accepts discoverable rivalry pages', () => {
+    expect(changedUrls({}, { '/clasicos/': 'directory', '/clasicos/boca-river-superclasico.html': 'page' })).toHaveLength(2)
+  })
   it.each(['//elsewhere.example/', '/?utm_source=x', '/indexnow-key.txt', '/clubes/../../privacidad.html'])('rejects an unsupported path: %s', (path) => {
     expect(() => changedUrls({}, { [path]: 'new' })).toThrow()
   })

@@ -1,0 +1,41 @@
+{
+  "recordedAt": "2026-09-09T20:55:00.000Z",
+  "trigger": "El propietario compartió el panel de Adsterra y pidió mejorar la audiencia.",
+  "baseline": {
+    "period": "2026-09-08/2026-09-09",
+    "adImpressions": 15,
+    "adClicks": 3,
+    "reportedCtr": "20%",
+    "reportedRevenueUsd": 0,
+    "source": "captura del panel de Adsterra proporcionada por el propietario"
+  },
+  "searchAudit": {
+    "checkedAt": "2026-09-09",
+    "queries": [
+      "site:futbolrealista.com.ar",
+      "\"Fútbol Argentino Realista\""
+    ],
+    "siteResultObserved": false,
+    "note": "La ausencia observada no demuestra una exclusión permanente; el dominio se había enviado a IndexNow el día anterior."
+  },
+  "implemented": {
+    "section": "https://futbolrealista.com.ar/clasicos/",
+    "newUrls": [
+      "https://futbolrealista.com.ar/clasicos/",
+      "https://futbolrealista.com.ar/clasicos/boca-river-superclasico.html",
+      "https://futbolrealista.com.ar/clasicos/racing-independiente-clasico-avellaneda.html",
+      "https://futbolrealista.com.ar/clasicos/rosario-central-newells-clasico-rosarino.html",
+      "https://futbolrealista.com.ar/clasicos/union-colon-clasico-santafesino.html",
+      "https://futbolrealista.com.ar/clasicos/huracan-san-lorenzo-clasico-porteno.html"
+    ],
+    "adUnitsPreserved": ["728x90", "320x50"],
+    "deployment": "pending",
+    "indexNowReceipt": "pending"
+  },
+  "outcomes": {
+    "indexed": "not_verified",
+    "websiteVisits": "not_verified",
+    "incrementalAdImpressions": "not_verified",
+    "incrementalRevenue": "not_verified"
+  }
+}

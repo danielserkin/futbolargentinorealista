@@ -19,7 +19,7 @@ export function changedUrls(previous, current) {
     .map((path) => {
       if (!path.startsWith('/') || path.startsWith('//') || path.includes('?') || path.includes('#')) throw new Error('Invalid search manifest path')
       const url = new URL(path, site)
-      if (url.origin !== site || !['/', '/novedades.html', '/clubes/'].includes(path) && !/^\/clubes\/[a-z0-9-]+\.html$/.test(path)) throw new Error('Search URL outside supported content')
+      if (url.origin !== site || !['/', '/novedades.html', '/clubes/', '/clasicos/'].includes(path) && !/^\/(clubes|clasicos)\/[a-z0-9-]+\.html$/.test(path)) throw new Error('Search URL outside supported content')
       return url.toString()
     })
 }

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
-import { campaignUrl, clubPath, publishedTeams, seasons, seasonTable, shareLinks } from './discovery'
-import { ClubPage } from './discovery-pages'
+import { campaignUrl, clubPath, publishedTeams, rivalries, rivalryPath, seasons, seasonTable, shareLinks } from './discovery'
+import { ClubPage, RivalryPage } from './discovery-pages'
 import App from './App'
 import fixture from '../public/data/football.json'
 import type { FootballData } from './types'
@@ -59,5 +59,16 @@ describe('discoverable football content', () => {
     expect(x.searchParams.get('text')).toBe('¿Y tu club? #Fútbol & datos')
     expect(new URL(x.searchParams.get('url')!).searchParams.get('utm_source')).toBe('x')
     expect(new URL(links.whatsapp).searchParams.get('text')).toContain('utm_source=whatsapp')
+  })
+
+  it('publishes a substantial, shareable comparison for every configured rivalry', () => {
+    for (const rivalry of rivalries) {
+      const html = renderToString(createElement(RivalryPage, { data, rivalry }))
+      expect(rivalryPath(rivalry)).toMatch(/^\/clasicos\/[a-z0-9-]+\.html$/)
+      expect(html).toContain('La foto actual de la temporada')
+      expect(html).toContain('Cruces presentes en nuestros datos')
+      expect(html).toContain('utm_source%3Dwhatsapp')
+      expect(html).toContain('no una tabla oficial de AFA')
+    }
   })
 })

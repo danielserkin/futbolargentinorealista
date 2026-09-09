@@ -4,7 +4,7 @@ import { socialCard } from './social-card.mjs'
 
 const dist = new URL('../dist/', import.meta.url)
 const server = await import(new URL('../.prerender/entry-server.js', import.meta.url).href)
-const { render, renderClub, renderDirectory, renderNews, clubPath, clubSlug, publishedTeams, seasons, seasonTable, siteUrl, defaultSeasonId, campaignUrl } = server
+const { render, renderClub, renderDirectory, renderNews, renderRivalry, renderRivalryDirectory, clubPath, clubSlug, publishedTeams, rivalries, rivalryPath, rivalryTeams, seasons, seasonTable, siteUrl, defaultSeasonId, campaignUrl } = server
 const html = await readFile(new URL('index.html', dist), 'utf8')
 const data = JSON.parse(await readFile(new URL('data/football.json', dist), 'utf8'))
 const marker = '<div id="root"></div>'
@@ -20,6 +20,7 @@ const contentVersion = hash(await readFile(new URL('../.prerender/entry-server.j
 const manifest = {
   '/': hash([contentVersion, data.league, data.cup]),
   '/clubes/': hash([contentVersion, teams]),
+  '/clasicos/': hash([contentVersion, rivalries]),
   '/novedades.html': hash([contentVersion, table.standings.slice(0, 5), table.regularMatches]),
 }
 const dateLabel = new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date(data.metadata.updatedAt))
@@ -52,6 +53,7 @@ ${socialHead(title, description, path, imagePath)}
 </head><body>${body.replace(/(<p class="lead">[\s\S]*?<\/p>)/, `$1${responsiveBanner}`)}${analytics}</body></html>`
 
 await mkdir(new URL('clubes/', dist), { recursive: true })
+await mkdir(new URL('clasicos/', dist), { recursive: true })
 await mkdir(new URL('social/', dist), { recursive: true })
 const homepageTitle = `Tabla del fútbol argentino ${season.label}, sin playoffs | Fútbol Realista`
 const homepageDescription = `Consultá la tabla alternativa del fútbol argentino ${season.label}: puntos, posiciones, rachas y comparador de clubes. Resultados reales en una temporada larga.`
@@ -62,7 +64,7 @@ let homepage = html.replace(/<title>.*?<\/title>/, `<title>${escape(homepageTitl
 await writeFile(new URL('index.html', dist), homepage)
 await writeFile(new URL('social/liga.png', dist), socialCard({ title: 'Fútbol argentino. Pero bien hecho.', subtitle: 'Resultados reales. Una temporada larga. Sin playoffs.', stats: [{ value: season.label, label: 'TEMPORADA' }, { value: '20', label: 'PUESTOS EN LA LIGA' }, { value: '3 / 1 / 0', label: 'PUNTOS POR RESULTADO' }], footer: 'Explorá la tabla y compará a tu equipo.' }))
 
-const generatedPaths = ['/clubes/', '/novedades.html']
+const generatedPaths = ['/clubes/', '/clasicos/', '/novedades.html']
 for (const team of teams) {
   const path = clubPath(team)
   const row = table.standings.find((item) => item.id === team.id)
@@ -79,6 +81,20 @@ for (const team of teams) {
   generatedPaths.push(path)
 }
 await writeFile(new URL('clubes/index.html', dist), staticPage({ title: 'Clubes del fútbol argentino: estadísticas y resultados | Fútbol Realista', description: 'Fichas de clubes del fútbol argentino: puntos, posición, rachas y resultados por temporada, con un comparador bajo las mismas reglas.', path: '/clubes/', body: renderDirectory(data) }))
+await writeFile(new URL('clasicos/index.html', dist), staticPage({ title: `Clásicos del fútbol argentino: comparador ${season.label} | Fútbol Realista`, description: 'Compará Boca–River, Racing–Independiente, el clásico rosarino, el santafesino y Huracán–San Lorenzo: puntos, posiciones, goles, rachas y cruces.', path: '/clasicos/', imagePath: '/social/clasicos.png', body: renderRivalryDirectory(data) }))
+await writeFile(new URL('social/clasicos.png', dist), socialCard({ title: 'Los clásicos, cara a cara', subtitle: `Comparador actualizado de la temporada ${season.label}.`, stats: [{ value: '5', label: 'CLÁSICOS' }, { value: '10', label: 'EQUIPOS' }, { value: '1', label: 'MISMA REGLA' }], footer: `Datos verificados: ${dateLabel}` }))
+for (const rivalry of rivalries) {
+  const rivalryPair = rivalryTeams(data, rivalry)
+  if (!rivalryPair) continue
+  const path = rivalryPath(rivalry)
+  const imagePath = `/social/${rivalry.slug}.png`
+  const [first, second] = rivalryPair
+  const rows = rivalryPair.map((team) => table.standings.find((row) => row.id === team.id) ?? table.partial.find((row) => row.id === team.id))
+  manifest[path] = hash([contentVersion, rivalry, rows, data.league.filter((match) => rivalry.teamIds.includes(match.home.id) && rivalry.teamIds.includes(match.away.id)), data.cup.filter((match) => rivalry.teamIds.includes(match.home.id) && rivalry.teamIds.includes(match.away.id))])
+  await writeFile(new URL(path.slice(1), dist), staticPage({ title: `${rivalry.name}: puntos, posiciones y resultados ${season.label} | Fútbol Realista`, description: `${first.name} vs. ${second.name}: compará puntos, posición, goles, rachas y cruces con datos actualizados de la temporada ${season.label}.`, path, imagePath, body: renderRivalry(data, rivalry) }))
+  await writeFile(new URL(imagePath.slice(1), dist), socialCard({ title: rivalry.name, subtitle: `Cara a cara en nuestra liga larga ${season.label}.`, stats: rows.map((row, index) => ({ value: row ? `${row.points} pts` : 'Sin datos', label: rivalryPair[index].shortName.toUpperCase() })), footer: 'Posiciones, forma, goles y cruces disponibles.' }))
+  generatedPaths.push(path)
+}
 await writeFile(new URL('novedades.html', dist), staticPage({ title: `Novedades y resultados ${season.label} | Fútbol Realista`, description: `Los primeros puestos y los últimos resultados de nuestra liga alternativa ${season.label}. Seguí la temporada larga del fútbol argentino sin playoffs.`, path: '/novedades.html', body: renderNews(data) }))
 const sitemap = await readFile(new URL('sitemap.xml', dist), 'utf8')
 await writeFile(new URL('sitemap.xml', dist), sitemap.replace('</urlset>', generatedPaths.map((path) => `  <url><loc>${siteUrl}${path}</loc><lastmod>${verifiedDate}</lastmod></url>`).join('\n') + '\n</urlset>'))

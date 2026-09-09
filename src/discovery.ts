@@ -8,6 +8,33 @@ export const seasons: SeasonDefinition[] = [
 ]
 export const defaultSeasonId = '2026-27'
 
+export interface RivalryDefinition {
+  slug: string
+  name: string
+  teamIds: [string, string]
+}
+
+export const rivalries: RivalryDefinition[] = [
+  { slug: 'boca-river-superclasico', name: 'Boca vs. River', teamIds: ['5', '16'] },
+  { slug: 'racing-independiente-clasico-avellaneda', name: 'Racing vs. Independiente', teamIds: ['15', '11'] },
+  { slug: 'rosario-central-newells-clasico-rosarino', name: "Rosario Central vs. Newell's", teamIds: ['17', '14'] },
+  { slug: 'union-colon-clasico-santafesino', name: 'Unión vs. Colón', teamIds: ['20', '7'] },
+  { slug: 'huracan-san-lorenzo-clasico-porteno', name: 'Huracán vs. San Lorenzo', teamIds: ['10', '18'] },
+]
+
+export const rivalryPath = (rivalry: Pick<RivalryDefinition, 'slug'>) => `/clasicos/${rivalry.slug}.html`
+
+export function rivalryTeams(data: FootballData, rivalry: RivalryDefinition): [Team, Team] | null {
+  const teams = new Map<string, Team>()
+  for (const match of [...data.league, ...data.cup]) {
+    teams.set(match.home.id, match.home)
+    teams.set(match.away.id, match.away)
+  }
+  const first = teams.get(rivalry.teamIds[0])
+  const second = teams.get(rivalry.teamIds[1])
+  return first && second ? [first, second] : null
+}
+
 export function clubSlug(team: Pick<Team, 'id' | 'name'>) {
   return `${team.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${team.id}`
 }
